@@ -2,8 +2,10 @@ import  os
 import  sys
 import  getopt
 
-from .viewer         import args_error, helps, deco
+from .viewer        import args_error, helps, deco
 from .version       import __version__
+from .viewer        import configurations
+from .config        import modify_config
 
 videos = []
 
@@ -11,8 +13,10 @@ def parseOpts(argument_list):
     deco()
     input_dir = ''
     input_file = ''
+
     try:
-        opts, args = getopt.getopt(argument_list,"vhf:d:w:",["version","help","where=","file=","dir="])
+        opts, args = getopt.getopt(argument_list,"cvhf:d:w:",["config","version","help","file=","dir=","where="])
+    
     except getopt.GetoptError:
         args_error(argument_list)
         sys.exit()
@@ -22,7 +26,7 @@ def parseOpts(argument_list):
             helps()
             sys.exit()
 
-        elif opt == "-f" or opt == "--file" or opt == "-w" or opt == "--where":
+        elif opt in("-f", "--file", "-w", "--where"):
             if arg == '':
                 args_error()
                 sys.exit()
@@ -31,7 +35,7 @@ def parseOpts(argument_list):
                 return input_dir, input_file, opt
                 break
 
-        elif opt == "-d" or opt == "--dir":
+        elif opt in ("-d", "--dir"):
             if arg == '':
                 args_error()
                 sys.exit()
@@ -43,11 +47,26 @@ def parseOpts(argument_list):
         elif opt in ("-v", "--version"):
             print(__version__)
             sys.exit()
+        
+        elif opt in ("-c", "--config"):
+            conf_images, conf_image_quality = configurations()
+
+            if conf_images != 0 and conf_image_quality != 0:
+                modify_config('images_image_quality', conf_images, conf_image_quality)
+
+            elif conf_images != 0:
+                modify_config('images', conf_images)
+
+            elif conf_image_quality != 0:
+                modify_config('image_quality', conf_image_quality)
+
+            sys.exit()
 
 def begin(input_dir = '', input_file = '', opt = ''):
     if opt == '-d' and input_dir == '':
         current_folder = os.getcwd() + '/'
         current_folder = current_folder.replace("\\", "/")
+
         for video in os.listdir(current_folder):
             if video.endswith('.mp4') or video.endswith('.mkv'):
                 videos.append(current_folder + video)

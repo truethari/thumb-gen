@@ -27,7 +27,6 @@ def run(argument_list = False):
         for video_path in videos:        
             app = Generator(video_path, secure_temp, screenshot_folder, resize_folder)
             app.run()
-    except:
-        print("Error: {}".format(sys.exc_info()[0]))
+
     finally:
         shutil.rmtree(temp_dir.name)

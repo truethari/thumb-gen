@@ -17,12 +17,10 @@ This is a Python application that can be used to generate video thumbnail for mp
 You can use pip:
 
 ```console
-$ pip3 install thumb-gen
+~$ pip3 install thumb-gen
 ```
 
 ## Configurations
-
-This application contains several default values that cannot be changed externally. You can modify **config.py** as follows.
 
 (These may change during the update)
 
@@ -30,7 +28,19 @@ This application contains several default values that cannot be changed external
 
 -  Thumbnail image quality
 
-``` python
+``` console
+~$ thumb-gen -c
+```
+
+or
+
+``` console
+~$ thumb-gen --config
+```
+
+By program default:
+
+``` ini
 IMAGES = 12
 IMAGE_QUALITY = 100
 ```
@@ -38,10 +48,16 @@ IMAGE_QUALITY = 100
 ## Usage options
 
 ``` text
--v, --version   show program's version number and exit
 -h, --help      show this help message and exit
+
+-c, --config    change screenshots for thumbnail image and image quality
+
+-v, --version   show program's version number and exit
+
 -f, --file      input a single video
+
 -w, --where     input a single video from another directory
+
 -d, --dir       input videos from a directory
 ```
 
@@ -50,18 +66,21 @@ IMAGE_QUALITY = 100
 Example
 
 ``` console
-~$ python main.py -h
-~$ python main.py --help
+~$ thumb-gen -h
+~$ thumb-gen --help
 
-~$ python main.py -v
-~$ python main.py --version
+~$ thumb-gen -c
+~$ thumb-gen --config
 
-~$ python main.py -f input.mp4
-~$ python main.py --file input.mp4
+~$ thumb-gen -v
+~$ thumb-gen --version
 
-~$ python main.py -w "D:/Videos/input.mp4"
-~$ python main.py --where "D:/Videos/input.mp4"
+~$ thumb-gen -f input.mp4
+~$ thumb-gen --file input.mp4
 
-~$ python main.py -d videos
-~$ python main.py --dir videos
+~$ thumb-gen -w "D:/Videos/input.mp4"
+~$ thumb-gen --where "D:/Videos/input.mp4"
+
+~$ thumb-gen -d videos
+~$ thumb-gen --dir videos
 ```

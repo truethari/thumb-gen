@@ -16,12 +16,13 @@ setup(
     author="tharindu.dev",
     author_email="tharindu.nm@yahoo.com",
     url="https://github.com/truethari/thumb-gen",
+    keywords="thumbnails video screenshot",
+    license='MIT',
     project_urls={
         "Bug Tracker": "https://github.com/truethari/thumb-gen/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
     ],
     packages=['thumb_gen'],
     include_package_data=True,

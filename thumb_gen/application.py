@@ -4,7 +4,7 @@ from ffmpy       import FFmpeg
 from videoprops  import get_video_properties
 from PIL         import Image
 
-from .config     import *
+from .config     import read_config
 
 def screenshots(video_path, screenshot_folder):
     for img in os.listdir(screenshot_folder):
@@ -14,7 +14,7 @@ def screenshots(video_path, screenshot_folder):
 
     video_properties = get_video_properties(video_path)
     video_duration = int(round(float(video_properties['duration']), 2))
-    frame_time = round((video_duration / IMAGES), 2)
+    frame_time = round((video_duration / read_config('images')), 2)
 
     screenshot_path = screenshot_folder + tm_video_path[-1]
     event = FFmpeg(inputs={video_path: None}, \
@@ -45,7 +45,7 @@ def thumb(video_path, resize_folder, secure_temp):
         r_new_width, new_height = image.size
         break
 
-    img_rows = IMAGES / 3
+    img_rows = read_config('images') / 3
     tmp_var = str(img_rows).split('.')
     if tmp_var[1] != '0':
         img_rows = int(img_rows) + 1
@@ -75,7 +75,7 @@ def thumb(video_path, resize_folder, secure_temp):
         back_im.paste(img_list[count - 1], (x, y))
         x = x + r_new_width + 5
 
-    back_im.save(video_path[:-4] + '.png', quality=IMAGE_QUALITY)
+    back_im.save(video_path[:-4] + '.png', quality=read_config('image_quality'))
     print('The thumbnail was saved in - {}\n'.format(video_path[:-4] + '.png'))
 
     return True
