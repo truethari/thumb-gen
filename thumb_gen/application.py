@@ -40,7 +40,6 @@ def resize(screenshot_folder, resize_folder):
     return True
 
 def thumb(video_path, resize_folder, secure_temp):
-    global  r_new_width
     for img in os.listdir(resize_folder):
         image = Image.open(resize_folder + img)
         r_new_width, new_height = image.size

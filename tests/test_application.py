@@ -9,6 +9,7 @@ secure_temp = temp_dir.name + '/'
 secure_temp = secure_temp.replace("\\", "/")
 screenshot_folder = secure_temp + '/screenshots/'
 resize_folder = secure_temp + '/resized/'
+output_path = '/home/travis/build/truethari/thumb-gen/'
 os.mkdir(screenshot_folder)
 os.mkdir(resize_folder)
 
@@ -24,5 +25,5 @@ def test_resize():
     assert test_resize_value == 1
 
 def test_thumb():
-    test_thumb_value = thumb(video_path, resize_folder, secure_temp)
+    test_thumb_value = thumb(output_path, resize_folder, secure_temp)
     assert test_thumb_value == 1
