@@ -5,12 +5,12 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![PyPI version](https://badge.fury.io/py/thumb-gen.svg)](https://badge.fury.io/py/thumb-gen)
 
-![thumb-gen](https://socialify.git.ci/truethari/thumb-gen/image?description=1&descriptionEditable=Python%20application%20that%20can%20be%20used%20to%20generate%20video%20thumbnail%20for%20mp4%20and%20mkv%20file%20types.&font=Inter&language=1&logo=https%3A%2F%2Fen.gravatar.com%2Fuserimage%2F101097900%2F0187b63cf526a88a4c67cab4ab5bfe7f.png&owner=1&pattern=Circuit%20Board&theme=Dark)
-
 ## What is This
 
 --------
 This is a Python application that can be used to generate video thumbnail for mp4 and mkv file types.
+
+[![Imgur](https://i.imgur.com/Yq9roDT.png)](https://imgur.com/Yq9roDT)
 
 ## Installation
 
@@ -28,6 +28,12 @@ You can use pip:
 
 -  Thumbnail image quality
 
+-  Font type in the video info panel. You can add a file path of a font file (.ttf) to this.
+
+-  Font size in the video info panel
+
+- Custom text in the video info panel
+
 ``` console
 ~$ thumb-gen -c
 ```
@@ -43,6 +49,9 @@ By program default:
 ``` ini
 IMAGES = 12
 IMAGE_QUALITY = 100
+FONT = arial.ttf
+FONT_SIZE = 30
+CUSTOM_TEXT = ''
 ```
 
 ## Usage options

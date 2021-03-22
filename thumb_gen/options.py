@@ -49,16 +49,22 @@ def parseOpts(argument_list):
             sys.exit()
         
         elif opt in ("-c", "--config"):
-            conf_images, conf_image_quality = configurations()
+            conf_images, conf_image_quality, conf_font, conf_font_size, conf_custom_text = configurations()
 
-            if conf_images != 0 and conf_image_quality != 0:
-                modify_config('images_image_quality', conf_images, conf_image_quality)
-
-            elif conf_images != 0:
+            if conf_images != 0:
                 modify_config('images', conf_images)
 
-            elif conf_image_quality != 0:
+            if conf_image_quality != 0:
                 modify_config('image_quality', conf_image_quality)
+            
+            if conf_font != '0':
+                modify_config('font', conf_font)
+
+            if conf_font_size != 0:
+                modify_config('font_size', conf_font_size)
+            
+            if conf_custom_text != 0:
+                modify_config('custom_text', conf_custom_text)
 
             sys.exit()
 

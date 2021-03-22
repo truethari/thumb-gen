@@ -23,7 +23,7 @@ def get_datadir() -> pathlib.Path:
     elif sys.platform == "darwin":
         return home / "Library/Application Support"
 
-def create_config(IMAGES=12, IMAGE_QUALITY=80):
+def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='arial.ttf', FONT_SIZE=30, CUSTOM_TEXT=''):
     my_datadir = get_datadir() / "thumb-gen"
 
     try:
@@ -35,13 +35,13 @@ def create_config(IMAGES=12, IMAGE_QUALITY=80):
     finally:
         configfile_path = str(my_datadir) + "/config.ini"
         config_object = configparser.ConfigParser()
-        config_object["DEFAULT"] = {"images": IMAGES, "image_quality": IMAGE_QUALITY}
+        config_object["DEFAULT"] = {"images": IMAGES, "image_quality": IMAGE_QUALITY, "font":FONT, "font_size":FONT_SIZE, "custom_text":CUSTOM_TEXT}
         with open(configfile_path, 'w') as conf:
             config_object.write(conf)
 
         return True
 
-def modify_config(options, value_1, value_2=0):
+def modify_config(options, value):
     my_datadir = get_datadir() / "thumb-gen"
     configfile_path = str(my_datadir) + "/config.ini"
     config_object  = configparser.ConfigParser()
@@ -49,13 +49,23 @@ def modify_config(options, value_1, value_2=0):
     config_object.read(configfile_path)
     userinfo = config_object["DEFAULT"]
 
-    if options == "images_image_quality":
-        userinfo["images"] = str(value_1)
-        userinfo["image_quality"] = str(value_2)
-    elif options == "images":
-        userinfo["images"] = str(value_1)
+    if options == "images":
+        userinfo["images"] = str(value)
+
     elif options == "image_quality":
-        userinfo["image_quality"] = str(value_1)
+        userinfo["image_quality"] = str(value)
+
+    elif options == "font":
+        userinfo["font"] = str(value)
+
+    elif options == "font_size":
+        userinfo["font_size"] = str(value)
+
+    elif options == "custom_text":
+        if value == '000' or value == 'clear':
+            userinfo["custom_text"] = ''
+        else:
+            userinfo["custom_text"] = str(value)
 
     with open(configfile_path, 'w') as conf:
         config_object.write(conf)
@@ -76,7 +86,23 @@ def read_config(option):
             config_object.read(configfile_path)
             default = config_object["DEFAULT"]
 
-    if option == 'images':
-        return int(default['images'])
-    elif option == 'image_quality':
-        return int(default['image_quality'])
+    loop = True
+    while loop:
+        try:
+            if option == 'images':
+                return int(default['images'])
+            elif option == 'image_quality':
+                return int(default['image_quality'])
+            elif option == 'font':
+                return str(default['font'])
+            elif option == 'font_size':
+                return int(default['font_size'])
+            elif option == 'custom_text':
+                return str(default['custom_text'])
+            loop = False
+
+        except KeyError:
+            create_config_return = create_config()
+            if create_config_return:
+                config_object.read(configfile_path)
+                default = config_object["DEFAULT"]
