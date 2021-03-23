@@ -1,27 +1,7 @@
 import os
-import sys
-import pathlib
 import configparser
 
-def get_datadir() -> pathlib.Path:
-
-    """
-    Returns a parent directory path
-    where persistent application data can be stored.
-
-    # linux: ~/.local/share
-    # macOS: ~/Library/Application Support
-    # windows: C:/Users/<USER>/AppData/Roaming
-    """
-
-    home = pathlib.Path.home()
-
-    if sys.platform == "win32":
-        return home / "AppData/Roaming"
-    elif sys.platform == "linux":
-        return home / ".local/share"
-    elif sys.platform == "darwin":
-        return home / "Library/Application Support"
+from .utils     import get_datadir
 
 def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='arial.ttf', FONT_SIZE=30, CUSTOM_TEXT=''):
     my_datadir = get_datadir() / "thumb-gen"
