@@ -218,7 +218,7 @@ def resize(screenshot_folder, resize_folder):
 
     return True
 
-def thumb(video_path, resize_folder, secure_temp):
+def thumb(video_path, output_folder, resize_folder, secure_temp):
     for img in os.listdir(resize_folder):
         image = Image.open(resize_folder + img)
         r_new_width, new_height = image.size
@@ -254,7 +254,7 @@ def thumb(video_path, resize_folder, secure_temp):
         back_im.paste(img_list[count - 1], (x, y))
         x = x + r_new_width + 5
 
-    back_im.save(video_path[:-4] + '.png', quality=read_config('image_quality'))
-    print('The thumbnail was saved in - {}\n'.format(video_path[:-4] + '.png'))
+    back_im.save(output_folder[:-4] + '.png', quality=read_config('image_quality'))
+    print('The thumbnail was saved in - {}\n'.format(output_folder[:-4] + '.png'))
 
     return True
