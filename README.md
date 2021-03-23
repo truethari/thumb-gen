@@ -86,12 +86,11 @@ CUSTOM_TEXT = ''
 
 ~$ thumb-gen -f input.mp4
 ~$ thumb-gen --file input.mp4
-
-~$ thumb-gen -w "D:/Videos/input.mp4"
-~$ thumb-gen --where "D:/Videos/input.mp4"
+~$ thumb-gen --file "d:/videos/input.mp4"
 
 ~$ thumb-gen -d videos
 ~$ thumb-gen --dir videos
+~$ thumb-gen --dir "d:/videos/"
 ```
 
 ### Python

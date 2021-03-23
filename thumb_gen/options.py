@@ -6,6 +6,7 @@ from .viewer        import args_error, helps, deco
 from .version       import __version__
 from .viewer        import configurations
 from .config        import modify_config
+from .utils         import CheckIfFileExists
 
 videos = []
 
@@ -15,7 +16,7 @@ def parseOpts(argument_list):
     input_file = ''
 
     try:
-        opts, args = getopt.getopt(argument_list,"cvhf:d:w:",["config","version","help","file=","dir=","where="])
+        opts, args = getopt.getopt(argument_list,"cvhf:d:",["config","version","help","file=","dir="])
     
     except getopt.GetoptError:
         args_error(argument_list)
@@ -26,7 +27,7 @@ def parseOpts(argument_list):
             helps()
             sys.exit()
 
-        elif opt in("-f", "--file", "-w", "--where"):
+        elif opt in("-f", "--file"):
             if arg == '':
                 args_error()
                 sys.exit()
@@ -86,10 +87,15 @@ def begin(input_dir = '', input_file = '', opt = ''):
     elif (opt == '-f' or opt == '--file') and input_file != '':
         current_folder = os.getcwd() + '/'
         current_folder = current_folder.replace("\\", "/")
-        videos.append(current_folder + input_file)
 
-    elif (opt == '-w' or opt == '-where') and input_file !='':
-        input_file = input_file.replace("\\", "/")
-        videos.append(input_file)
+        if CheckIfFileExists(input_file):
+            videos.append(input_file)
+        
+        elif CheckIfFileExists(current_folder + input_file):
+            videos.append(current_folder + input_file)
+        
+        else:
+            print("File not found!")
+            sys.exit()
 
     return videos
