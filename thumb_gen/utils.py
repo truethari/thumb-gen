@@ -1,7 +1,6 @@
 import enum
 import os
 
-from os import path
 from videoprops  import get_video_properties, get_audio_properties
 
 def listToString(s):
@@ -34,7 +33,7 @@ def get_file_size(file_name, size_type = "SIZE_UNIT.MB" ):
    return convert_unit(size, size_type)
 
 def CheckIfFileExists(file_path):
-    if path.exists(file_path):
+    if os.path.exists(file_path):
         return True
     else:
         return False
