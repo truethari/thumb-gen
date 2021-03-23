@@ -74,10 +74,13 @@ def lining(text, font, font_size, image_width):
 
     return lines
 
-def imageText(video_path, secure_tmp, bg_width, bg_height):
+def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text):
     font_name = read_config('font')
     font_size = read_config('font_size')
-    custom_text = read_config('custom_text')
+    if custom_text == 'True':
+        custom_text = read_config('custom_text')
+    elif custom_text == 'False':
+        custom_text = ''
 
     filename = video_path.split("/")
     filename = filename[-1]
@@ -218,7 +221,7 @@ def resize(screenshot_folder, resize_folder):
 
     return True
 
-def thumb(video_path, output_folder, resize_folder, secure_temp):
+def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text):
     for img in os.listdir(resize_folder):
         image = Image.open(resize_folder + img)
         r_new_width, new_height = image.size
@@ -232,7 +235,7 @@ def thumb(video_path, output_folder, resize_folder, secure_temp):
     bg_new_width = int((r_new_width * 3) + 20)
     bg_new_height = int((new_height * img_rows) + (14 * (img_rows)))
 
-    y = imageText(video_path, secure_temp, bg_new_width, bg_new_height)
+    y = imageText(video_path, secure_temp, bg_new_width, bg_new_height, custom_text)
 
     backgroud = Image.open(secure_temp + 'bg.png')
 
@@ -254,7 +257,7 @@ def thumb(video_path, output_folder, resize_folder, secure_temp):
         back_im.paste(img_list[count - 1], (x, y))
         x = x + r_new_width + 5
 
-    back_im.save(output_folder[:-4] + '.png', quality=read_config('image_quality'))
-    print('The thumbnail was saved in - {}\n'.format(output_folder[:-4] + '.png'))
+    back_im.save(output_folder + '.png', quality=read_config('image_quality'))
+    print('The thumbnail was saved in - {}\n'.format(output_folder + '.png'))
 
     return True

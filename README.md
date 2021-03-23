@@ -72,7 +72,7 @@ CUSTOM_TEXT = ''
 
 ## Usage
 
-Example
+### Console
 
 ``` console
 ~$ thumb-gen -h
@@ -92,4 +92,33 @@ Example
 
 ~$ thumb-gen -d videos
 ~$ thumb-gen --dir videos
+```
+
+### Python
+
+-  If you don't set an output folder, thumbnail images will be saved in the video folder (video_path).
+
+-  If you don't need a custom text and you have already set a custom text for the configuration file (using console), it will be added automatically. To avoid this set the `custom_text` value to `False` .
+
+#### Example 1
+
+``` python
+from thumb_gen import worker
+
+#video_path, output_path='', custom_text=True
+app = worker.Generator("C:/input/video.mp4", "C:/output/", "www.example.com")
+app.run()
+```
+
+#### Example 2
+
+``` Python
+import os
+from thumb_gen import worker
+
+folder = 'C:/input/'
+for video in os.listdir(folder):
+    if video.endswith('.mp4') or video.endswith('.mkv'):
+        app = worker.Generator((folder + video), custom_text=False)
+        app.run()
 ```
