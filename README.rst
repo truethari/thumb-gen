@@ -10,6 +10,7 @@ Thumbnail Generator
 -------------
 What is This?
 -------------
+
 This is a Python application that can be used to generate video thumbnail for mp4 and mkv file types.
 
 .. image:: https://i.imgur.com/Yq9roDT.png
@@ -41,6 +42,13 @@ Configurations
 
 - Custom text in the video info panel
 
+Important
+=========
+
+- **If you are not a Windows user, you should add a font file path before use.**
+
+Download font files : `FontSquirrel <https://www.fontsquirrel.com/>`_
+
 .. code-block:: bash
 
    ~$ thumb-gen -c
@@ -64,6 +72,7 @@ By program default:
 -----
 Usage 
 -----
+
 Usage options:
 ==============
 
@@ -105,16 +114,16 @@ Python
 
 - If you don't set an output folder, thumbnail images will be saved in the video folder (video_path).
 
-- If you don't need a custom text and you have already set a custom text for the configuration file (using console), it will be added automatically. To avoid this set the `custom_text` value to `False` .
+- If you don't need a custom text and custom font file (including font size) and you have already set these for the configuration file (using console or defaults), it will be added automatically (Please read the 'Important' note under Configurations). To avoid this set the `custom_text` value to `False` and add a custom font file location.
 
 Example 1
 
 .. code-block:: Python
 
-   from thumb_gen import worker
+   from thumb_gen.worker import Generator
 
    #video_path, output_path='', custom_text=True
-   app = worker.Generator("C:/input/video.mp4", "C:/output/", "www.example.com")
+   app = Generator("C:/input/video.mp4", "C:/output/", "www.example.com")
    app.run()
 
 Example 2
@@ -122,10 +131,10 @@ Example 2
 .. code-block:: Python
 
    import os
-   from thumb_gen import worker
+   from thumb_gen.worker import Generator
    
    folder = 'C:/input/'
    for video in os.listdir(folder):
        if video.endswith('.mp4') or video.endswith('.mkv'):
-           app = worker.Generator((folder + video), custom_text=False)
+           app = Generator((folder + video), custom_text=False)
            app.run()

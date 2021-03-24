@@ -34,6 +34,12 @@ You can use pip:
 
 - Custom text in the video info panel
 
+### Important
+
+-  **If you are not a Windows user, you should add a font file path before use.**
+
+Download font files : [FontSquirrel](https://www.fontsquirrel.com/)
+
 ``` console
 ~$ thumb-gen -c
 ```
@@ -55,6 +61,7 @@ CUSTOM_TEXT = ''
 ```
 
 ## Usage
+
 ### Usage options
 
 ``` text
@@ -94,15 +101,15 @@ CUSTOM_TEXT = ''
 
 -  If you don't set an output folder, thumbnail images will be saved in the video folder (video_path).
 
--  If you don't need a custom text and you have already set a custom text for the configuration file (using console), it will be added automatically. To avoid this set the `custom_text` value to `False` .
+-  If you don't need a custom text and custom font file (including font size) and you have already set these for the configuration file (using console or defaults), it will be added automatically (Please read the '[Important](https://github.com/truethari/thumb-gen#important)' note under Configurations). To avoid this set the `custom_text` value to `False` and add a custom font file location.
 
 #### Example 1
 
 ``` python
-from thumb_gen import worker
+from thumb_gen.worker import Generator
 
-#video_path, output_path='', custom_text=True
-app = worker.Generator("C:/input/video.mp4", "C:/output/", "www.example.com")
+#video_path, output_path='', custom_text='True', font_dir='', font_size=
+app = Generator("C:/input/video.mp4", "C:/output/", "www.example.com", "C:/Windows/Fonts/Arial.ttf", 30)
 app.run()
 ```
 
@@ -110,11 +117,11 @@ app.run()
 
 ``` Python
 import os
-from thumb_gen import worker
+from thumb_gen.worker import Generator
 
 folder = 'C:/input/'
 for video in os.listdir(folder):
     if video.endswith('.mp4') or video.endswith('.mkv'):
-        app = worker.Generator((folder + video), custom_text=False)
+        app = Generator((folder + video), custom_text=False, font_dir="C:/Project/font.ttf", font_size=25)
         app.run()
 ```

@@ -84,7 +84,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     else:
         font_name = font_dir
 
-    if font_size == '0':
+    if font_size == 0:
         font_size = read_config('font_size')
 
     if custom_text == 'True':
