@@ -25,8 +25,16 @@ def get_datadir() -> pathlib.Path:
     elif sys.platform == "darwin":
         return home / "Library/Application Support"
 
-def listToString(s):
-    str1 = " "
+def check_os():
+    if sys.platform == 'win32':
+        return 'win32'
+    elif sys.platform == 'linux':
+        return 'linux'
+    elif sys.platform == 'darwin':
+        return 'darwin'
+
+def listToString(s, chars=" "):
+    str1 = chars
     return (str1.join(s))
 
 def video_info(video_path):

@@ -1,7 +1,11 @@
 import sys
 
 from .config import read_config
-from .utils import CheckIfFileExists
+from .utils import CheckIfFileExists, check_os
+from datetime import datetime
+
+now = datetime.now()
+current_time = now.strftime("%H:%M:%S")
 
 def deco():
         print("""
@@ -95,3 +99,17 @@ def configurations():
                 loop = False
 
         return images, image_quality, font_path, font_size, custom_text
+
+def print_process(name):
+        oss = check_os()
+        if oss == 'linux':
+                print("\033[33m [{}]  \033[36m Processing: {}\033[00m" .format(current_time, name))
+        else:
+                print(" [{}]   Processing: {}".format(current_time, name))
+
+def print_success(name):
+    oss = check_os()
+    if oss == 'linux':
+        print("\033[33m [{}]  \033[36m Thumbnail saved in: {}\033[00m" .format(current_time, name))
+    else:
+        print(" [{}]   Thumbnail saved in: {}".format(current_time, name))

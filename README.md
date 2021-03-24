@@ -54,7 +54,8 @@ FONT_SIZE = 30
 CUSTOM_TEXT = ''
 ```
 
-## Usage options
+## Usage
+### Usage options
 
 ``` text
 -h, --help      show this help message and exit
@@ -65,12 +66,8 @@ CUSTOM_TEXT = ''
 
 -f, --file      input a single video
 
--w, --where     input a single video from another directory
-
 -d, --dir       input videos from a directory
 ```
-
-## Usage
 
 ### Console
 

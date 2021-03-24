@@ -1,7 +1,8 @@
 import os
 import configparser
 
-from .utils     import get_datadir
+from .utils     import get_datadir, CheckIfFileExists
+from .version   import __version__
 
 def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='arial.ttf', FONT_SIZE=30, CUSTOM_TEXT=''):
     my_datadir = get_datadir() / "thumb-gen"
@@ -16,6 +17,7 @@ def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='arial.ttf', FONT_SIZE=30, C
         configfile_path = str(my_datadir) + "/config.ini"
         config_object = configparser.ConfigParser()
         config_object["DEFAULT"] = {"images": IMAGES, "image_quality": IMAGE_QUALITY, "font":FONT, "font_size":FONT_SIZE, "custom_text":CUSTOM_TEXT}
+        config_object["VERSION"] = {"version": __version__}
         with open(configfile_path, 'w') as conf:
             config_object.write(conf)
 
@@ -57,9 +59,23 @@ def read_config(option):
     configfile_path = str(my_datadir) + "/config.ini"
     config_object = configparser.ConfigParser()
 
-    if os.path.isfile(configfile_path):
+    if CheckIfFileExists(configfile_path):
         config_object.read(configfile_path)
-        default = config_object["DEFAULT"]
+
+        try:
+            config_object["VERSION"]["version"] == __version__
+        except KeyError:
+            create_config()
+
+        config_object.read(configfile_path)
+        if config_object["VERSION"]["version"] == __version__:
+            default = config_object["DEFAULT"]
+        else:
+            create_config_return = create_config()
+            if create_config_return:
+                config_object.read(configfile_path)
+                default = config_object["DEFAULT"]
+
     else:
         create_config_return = create_config()
         if create_config_return:

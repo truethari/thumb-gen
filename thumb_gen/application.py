@@ -10,7 +10,11 @@ from .config    import read_config
 from .utils     import listToString, video_info, get_file_size, convert_unit
 
 def font_info(text, font, font_size):
-    font = ImageFont.truetype(font, font_size)
+    try:
+        font = ImageFont.truetype(font, font_size)
+    except OSError:
+        font = ImageFont.load_default()
+
     text_width = font.getsize(text)[0]
     text_height = font.getsize(text)[1]
 
@@ -74,9 +78,15 @@ def lining(text, font, font_size, image_width):
 
     return lines
 
-def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text):
-    font_name = read_config('font')
-    font_size = read_config('font_size')
+def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir, font_size):
+    if font_dir == '':
+        font_name = read_config('font')
+    else:
+        font_name = font_dir
+
+    if font_size == '0':
+        font_size = read_config('font_size')
+
     if custom_text == 'True':
         custom_text = read_config('custom_text')
     elif custom_text == 'False':
@@ -106,9 +116,9 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text):
     #custom
     custom_text_bx = custom_text
 
-    info_line2 = info_filesize + '    '  + info_duration + '    '  + info_avgbitrate
-    info_line3 = info_video + '    '  + info_video_res + '    '  + info_video_bitrate + '    '  + info_video_fps
-    info_line4 = info_audio + '    '  + info_audio_rate + '    '  + info_audio_channels + '    ' + info_audio_bitrate
+    info_line2 = info_filesize + '    ' + info_duration + '    ' + info_avgbitrate
+    info_line3 = info_video + '    ' + info_video_res + '    ' + info_video_bitrate + '    ' + info_video_fps
+    info_line4 = info_audio + '    ' + info_audio_rate + '    ' + info_audio_channels + '    ' + info_audio_bitrate
 
     font_height_filename = 0
     font_height_normal = font_info(info_duration, font_name, font_size)[1]
@@ -143,7 +153,11 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text):
     org_width, org_height = background.size
 
     draw = ImageDraw.Draw(background)
-    font = ImageFont.truetype(font_name, font_size)
+
+    try:
+        font = ImageFont.truetype(font_name, font_size)
+    except OSError:
+        font = ImageFont.load_default()
 
     x = 10
     y = 10
@@ -221,7 +235,7 @@ def resize(screenshot_folder, resize_folder):
 
     return True
 
-def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text):
+def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text, font_dir, font_size):
     for img in os.listdir(resize_folder):
         image = Image.open(resize_folder + img)
         r_new_width, new_height = image.size
@@ -235,7 +249,7 @@ def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text):
     bg_new_width = int((r_new_width * 3) + 20)
     bg_new_height = int((new_height * img_rows) + (14 * (img_rows)))
 
-    y = imageText(video_path, secure_temp, bg_new_width, bg_new_height, custom_text)
+    y = imageText(video_path, secure_temp, bg_new_width, bg_new_height, custom_text, font_dir, font_size)
 
     backgroud = Image.open(secure_temp + 'bg.png')
 
@@ -258,6 +272,5 @@ def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text):
         x = x + r_new_width + 5
 
     back_im.save(output_folder + '.png', quality=read_config('image_quality'))
-    print('The thumbnail was saved in - {}\n'.format(output_folder + '.png'))
 
     return True
