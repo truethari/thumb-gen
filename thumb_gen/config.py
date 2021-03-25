@@ -2,7 +2,7 @@ import os
 import configparser
 
 from .utils     import get_datadir, CheckIfFileExists
-from .version   import __version__
+from .version   import config_version
 
 def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='', FONT_SIZE=30, CUSTOM_TEXT=''):
     my_datadir = get_datadir() / "thumb-gen"
@@ -17,7 +17,7 @@ def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='', FONT_SIZE=30, CUSTOM_TEX
         configfile_path = str(my_datadir) + "/config.ini"
         config_object = configparser.ConfigParser()
         config_object["DEFAULT"] = {"images": IMAGES, "image_quality": IMAGE_QUALITY, "font":FONT, "font_size":FONT_SIZE, "custom_text":CUSTOM_TEXT}
-        config_object["VERSION"] = {"version": __version__}
+        config_object["VERSION"] = {"config_version": config_version}
         with open(configfile_path, 'w') as conf:
             config_object.write(conf)
 
@@ -63,13 +63,14 @@ def read_config(option):
         config_object.read(configfile_path)
 
         try:
-            config_object["VERSION"]["version"] == __version__
+            config_object["VERSION"]["config_version"] == config_version
         except KeyError:
             create_config()
 
         config_object.read(configfile_path)
-        if config_object["VERSION"]["version"] == __version__:
+        if config_object["VERSION"]["config_version"] == config_version:
             default = config_object["DEFAULT"]
+
         else:
             create_config_return = create_config()
             if create_config_return:

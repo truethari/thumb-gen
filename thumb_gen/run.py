@@ -16,3 +16,5 @@ def run(argument_list = False):
     for video_path in videos:
         app = Generator(video_path)
         app.run()
+    
+    sys.exit()
