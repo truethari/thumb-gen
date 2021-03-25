@@ -128,7 +128,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     font_height_normal = font_info(info_duration, font_name, font_size)[1]
     font_height_custom_text = 0
 
-    filename_text_lines = lining(custom_text_bx, font_name, font_size, bg_width)
+    filename_text_lines = lining(info_filename, font_name, font_size, bg_width)
     rounds = 0
     for items in filename_text_lines:
         rounds = rounds + 1
@@ -137,16 +137,17 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
                 font_height = font_info(lines, font_name, font_size)[1]
                 font_height_filename = font_height_filename + font_height + 5
 
-    custom_text_lines = lining(custom_text_bx, font_name, font_size, bg_width)
     rounds = 0
-    for items in custom_text_lines:
-        rounds = rounds + 1
-        for lines in custom_text_lines['line{}'.format(rounds)]:
-            if lines != []:
-                font_height = font_info(lines, font_name, font_size)[1]
-                font_height_custom_text = font_height_custom_text + font_height + 5
+    if not custom_text_bx == '':
+        custom_text_lines = lining(custom_text_bx, font_name, font_size, bg_width)
+        for items in custom_text_lines:
+            rounds = rounds + 1
+            for lines in custom_text_lines['line{}'.format(rounds)]:
+                if lines != []:
+                    font_height = font_info(lines, font_name, font_size)[1]
+                    font_height_custom_text = font_height_custom_text + font_height
 
-    text_area_height = font_height_filename + font_height_normal * 3 + font_height_custom_text + 25
+    text_area_height = 5 + font_height_filename + (font_height_normal + 5) * 3 + font_height_custom_text
 
     bg_new_height = text_area_height + bg_height
 
@@ -161,10 +162,13 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     try:
         font = ImageFont.truetype(font_name, font_size)
     except OSError:
-        font = ImageFont.load_default()
+        print("{} file not found. Default font is loaded.".format(font_name))
+        package_dir = packagePath()
+        font_name = package_dir + '/fonts/RobotoCondensed-Regular.ttf'
+        font = ImageFont.truetype(font_name, font_size)
 
     x = 10
-    y = 10
+    y = 5
 
     rounds = 0
 
@@ -201,10 +205,12 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
                 if lines != []:
                     font_width, font_height = font_info(lines, font_name, font_size)
                     draw.text((x, y), lines, 'black', font=font)
-                    y = y + 5 + font_height
+                    y = y + font_height
+    y = y + 5
 
     background.save(secure_tmp + 'bg.png')
-    return y + 10
+
+    return y + 5
 
 def screenshots(video_path, screenshot_folder):
     for img in os.listdir(screenshot_folder):
@@ -249,9 +255,10 @@ def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text, fo
     tmp_var = str(img_rows).split('.')
     if tmp_var[1] != '0':
         img_rows = int(img_rows) + 1
+    img_rows = int(img_rows)
 
     bg_new_width = int((r_new_width * 3) + 20)
-    bg_new_height = int((new_height * img_rows) + (14 * (img_rows)))
+    bg_new_height = int((new_height * img_rows) + ((5 * img_rows) + 5))
 
     y = imageText(video_path, secure_temp, bg_new_width, bg_new_height, custom_text, font_dir, font_size)
 
