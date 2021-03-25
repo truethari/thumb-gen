@@ -34,10 +34,6 @@ You can use pip:
 
 - Custom text in the video info panel
 
-### Important
-
--  **If you are not a Windows user, you should add a font file path before use.**
-
 Download font files : [FontSquirrel](https://www.fontsquirrel.com/)
 
 ``` console
@@ -54,10 +50,10 @@ By program default:
 
 ``` ini
 IMAGES = 12
-IMAGE_QUALITY = 100
-FONT = arial.ttf
+IMAGE_QUALITY = 80
+FONT = 
 FONT_SIZE = 30
-CUSTOM_TEXT = ''
+CUSTOM_TEXT = 
 ```
 
 ## Usage
@@ -67,7 +63,7 @@ CUSTOM_TEXT = ''
 ``` text
 -h, --help      show this help message and exit
 
--c, --config    change screenshots for thumbnail image and image quality
+-c, --config    Configurations
 
 -v, --version   show program's version number and exit
 
@@ -94,21 +90,21 @@ CUSTOM_TEXT = ''
 
 ~$ thumb-gen -d videos
 ~$ thumb-gen --dir videos
-~$ thumb-gen --dir "d:/videos/"
+~$ thumb-gen --dir "d:/videos"
 ```
 
 ### Python
 
 -  If you don't set an output folder, thumbnail images will be saved in the video folder (video_path).
 
--  If you don't need a custom text and custom font file (including font size) and you have already set these for the configuration file (using console or defaults), it will be added automatically (Please read the '[Important](https://github.com/truethari/thumb-gen#important)' note under Configurations). To avoid this set the `custom_text` value to `False` and add a custom font file location.
+-  If you don't need a custom text and custom font file (including font size) and you have already set these for the configuration file (using console or defaults), it will be added automatically. To avoid this set the `custom_text` value to `False` and add a custom font file location.
 
 #### Example 1
 
 ``` python
 from thumb_gen.worker import Generator
 
-#video_path, output_path='', custom_text='True', font_dir='', font_size=
+#video_path, output_path='', custom_text=True, font_dir='', font_size=
 app = Generator("C:/input/video.mp4", "C:/output/", "www.example.com", "C:/Windows/Fonts/Arial.ttf", 30)
 app.run()
 ```

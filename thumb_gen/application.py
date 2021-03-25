@@ -1,4 +1,5 @@
 import os
+import re
 
 from ffmpy      import FFmpeg
 from videoprops import get_video_properties
@@ -83,7 +84,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
         font_name = read_config('font')
         if font_name == '':
             package_dir = packagePath()
-            font_name = package_dir + '/fonts/RobotoCondensed-Regular.ttf'
+            font_name = os.path.join(package_dir, 'fonts', 'RobotoCondensed-Regular.ttf')
 
     else:
         font_name = font_dir
@@ -96,14 +97,15 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     elif custom_text == 'False':
         custom_text = ''
 
-    filename = video_path.split("/")
+    filename = re.split(pattern = r"[/\\]", string = video_path)
     filename = filename[-1]
 
     #file
     info_filename = "Filename: " + filename
     info_filesize = "Size: " + str(get_file_size(video_path)) + "MB"
     try:
-        info_duration = "Duration: " + video_info(video_path)[0]['duration']
+        duration = round(float(video_info(video_path)[0]['duration']) / 60, 2)
+        info_duration = "Duration: " + str(duration) + 'min'
     except KeyError:
         info_duration = ''
     try:
@@ -182,9 +184,9 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     bg_new_height = text_area_height + bg_height
 
     img = Image.new('RGB', (bg_width, bg_new_height), color = 'white')
-    img.save(secure_tmp + 'bg.png')
+    img.save(os.path.join(secure_tmp, 'bg.png'))
 
-    background = Image.open(secure_tmp + 'bg.png')
+    background = Image.open(os.path.join(secure_tmp, 'bg.png'))
     org_width, org_height = background.size
 
     draw = ImageDraw.Draw(background)
@@ -192,9 +194,9 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     try:
         font = ImageFont.truetype(font_name, font_size)
     except OSError:
-        print("{} file not found. Default font is loaded.".format(font_name))
+        print("{} file not found! Default font is loaded.".format(font_name))
         package_dir = packagePath()
-        font_name = package_dir + '/fonts/RobotoCondensed-Regular.ttf'
+        font_name = os.path.join(package_dir, 'fonts', 'RobotoCondensed-Regular.ttf')
         font = ImageFont.truetype(font_name, font_size)
 
     x = 10
@@ -238,21 +240,21 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
                     y = y + font_height
     y = y + 5
 
-    background.save(secure_tmp + 'bg.png')
+    background.save(os.path.join(secure_tmp, 'bg.png'))
 
     return y + 5
 
 def screenshots(video_path, screenshot_folder):
     for img in os.listdir(screenshot_folder):
-        os.remove(screenshot_folder + img)
+        os.remove(os.path.join(screenshot_folder, img))
 
-    tm_video_path = video_path.split("/")
+    tm_video_path = re.split(pattern = r"[/\\]", string = video_path)
 
     video_properties = get_video_properties(video_path)
     video_duration = int(round(float(video_properties['duration']), 2))
     frame_time = round((video_duration / read_config('images')), 2)
 
-    screenshot_path = screenshot_folder + tm_video_path[-1]
+    screenshot_path = os.path.join(screenshot_folder, tm_video_path[-1])
     event = FFmpeg(inputs={video_path: None}, \
             outputs={screenshot_path + '_screen%d.png': \
             ['-hide_banner', '-nostats', '-loglevel', '0', '-vf', 'fps=1/' + str(frame_time)]})
@@ -265,19 +267,19 @@ def resize(screenshot_folder, resize_folder):
         os.remove(resize_folder + img)
 
     for img in os.listdir(screenshot_folder):
-        image = Image.open(screenshot_folder + img)
+        image = Image.open(os.path.join(screenshot_folder, img))
         org_width, org_height = image.size
 
         new_height = 300 * org_height / org_width
 
         resized_im = image.resize((300, round(new_height)))
-        resized_im.save(resize_folder + 'resized_' + img)
+        resized_im.save(os.path.join(resize_folder, 'resized_') + img)
 
     return True
 
 def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text, font_dir, font_size):
     for img in os.listdir(resize_folder):
-        image = Image.open(resize_folder + img)
+        image = Image.open(os.path.join(resize_folder, img))
         r_new_width, new_height = image.size
         break
 
@@ -292,11 +294,11 @@ def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text, fo
 
     y = imageText(video_path, secure_temp, bg_new_width, bg_new_height, custom_text, font_dir, font_size)
 
-    backgroud = Image.open(secure_temp + 'bg.png')
+    backgroud = Image.open(os.path.join(secure_temp, 'bg.png'))
 
     img_list = []
     for img in os.listdir(resize_folder):
-        image = Image.open(resize_folder + img)
+        image = Image.open(os.path.join(resize_folder, img))
         img_list.append(image)
 
     back_im = backgroud.copy()

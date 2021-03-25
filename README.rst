@@ -42,11 +42,6 @@ Configurations
 
 - Custom text in the video info panel
 
-Important
-=========
-
-- **If you are not a Windows user, you should add a font file path before use.**
-
 Download font files : `FontSquirrel <https://www.fontsquirrel.com/>`_
 
 .. code-block:: bash
@@ -64,10 +59,10 @@ By program default:
 .. code-block:: ini
 
    IMAGES = 12
-   IMAGE_QUALITY = 100
-   FONT = arial.ttf
+   IMAGE_QUALITY = 80
+   FONT = 
    FONT_SIZE = 30
-   CUSTOM_TEXT = ''
+   CUSTOM_TEXT = 
 
 -----
 Usage 
@@ -80,7 +75,7 @@ Usage options:
 
    -h, --help      show this help message and exit
 
-   -c, --config    change screenshots for thumbnail image and image quality
+   -c, --config    configurations
 
    -v, --version   show program's version number and exit
 
@@ -108,13 +103,14 @@ Console
 
    ~$ thumb-gen -d videos
    ~$ thumb-gen --dir videos
+   ~$ thumb-gen --dir "d:/videos"
 
 Python
 ======
 
 - If you don't set an output folder, thumbnail images will be saved in the video folder (video_path).
 
-- If you don't need a custom text and custom font file (including font size) and you have already set these for the configuration file (using console or defaults), it will be added automatically (Please read the 'Important' note under Configurations). To avoid this set the `custom_text` value to `False` and add a custom font file location.
+- If you don't need a custom text and custom font file (including font size) and you have already set these for the configuration file (using console or defaults), it will be added automatically. To avoid this set the `custom_text` value to `False` and add a custom font file location.
 
 Example 1
 

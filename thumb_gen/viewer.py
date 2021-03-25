@@ -9,13 +9,12 @@ current_time = now.strftime("%H:%M:%S")
 
 def deco():
         print("""
-  _______ _                     _            _____
- |__   __| |                   | |          / ____|           
-    | |  | |__  _   _ _ __ ___ | |__ ______| |  __  ___ _ __
-    | |  | '_ \| | | | '_ ` _ \| '_ |______| | |_ |/ _ | '_ \ 
-    | |  | | | | |_| | | | | | | |_) |     | |__| |  __| | | |
-    |_|  |_| |_|\__,_|_| |_| |_|_.__/       \_____|\___|_| |_|
-
+  _____ _                     _                            
+ /__   \ |__  _   _ _ __ ___ | |__         __ _  ___ _ __  
+   / /\/ '_ \| | | | '_ ` _ \| '_ \ _____ / _` |/ _ \ '_ \ 
+  / /  | | | | |_| | | | | | | |_) |_____| (_| |  __/ | | |
+  \/   |_| |_|\__,_|_| |_| |_|_.__/       \__, |\___|_| |_|
+                                          |___/            
                 """)
 
 def args_error(argument_list = False):
@@ -32,7 +31,6 @@ def helps():
 
  Options:
     -f, --file          input a single video from current directory
-    -w, --where         input a single video from another directory
     -d, --dir           input videos from a directory
     """)
 

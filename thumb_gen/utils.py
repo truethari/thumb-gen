@@ -2,9 +2,10 @@ import enum
 import os
 import sys
 import pathlib
-import thumb_gen as _ 
-
+ 
 from videoprops  import get_video_properties, get_audio_properties
+
+import thumb_gen as _
 
 def get_datadir() -> pathlib.Path:
 
@@ -36,7 +37,14 @@ def check_os():
 
 def listToString(s, chars=" "):
     str1 = chars
-    return (str1.join(s))
+    if chars == 'sys':
+        oss = check_os()
+        if oss == 'win32':
+            return ('\\'.join(s))
+        else:
+            return ('/'.join(s))
+    else:
+        return (str1.join(s))
 
 def video_info(video_path):
     video_properties = get_video_properties(video_path)
@@ -60,8 +68,8 @@ def convert_unit(size_in_bytes, unit):
         return size_in_bytes
 
 def get_file_size(file_name, size_type = "SIZE_UNIT.MB" ):
-   size = os.path.getsize(file_name)
-   return convert_unit(size, size_type)
+    size = os.path.getsize(file_name)
+    return convert_unit(size, size_type)
 
 def CheckIfFileExists(file_path):
     if os.path.exists(file_path):

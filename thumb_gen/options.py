@@ -12,8 +12,6 @@ videos = []
 
 def parseOpts(argument_list):
     deco()
-    input_dir = ''
-    input_file = ''
 
     try:
         opts, args = getopt.getopt(argument_list,"cvhf:d:",["config","version","help","file=","dir="])
@@ -33,17 +31,10 @@ def parseOpts(argument_list):
                 sys.exit()
 
             else:
-                input_file = arg
-                return input_dir, input_file, opt
+                return arg, opt
 
         elif opt in ("-d", "--dir"):
-            if arg == '':
-                args_error()
-                sys.exit()
-
-            else:
-                input_dir = arg
-                return input_dir, input_file, opt
+            return arg, opt
 
         elif opt in ("-v", "--version"):
             print(__version__)
@@ -69,42 +60,30 @@ def parseOpts(argument_list):
 
             sys.exit()
 
-def begin(input_dir = '', input_file = '', opt = ''):
-    if opt == '-d' and input_dir == '':
-        current_folder = os.getcwd() + '/'
-        current_folder = current_folder.replace("\\", "/")
+def begin(args='', opt=''):
+    current_folder = os.getcwd()
 
-        for video in os.listdir(current_folder):
-            if video.endswith('.mp4') or video.endswith('.mkv'):
-                videos.append(current_folder + video)
-
-    elif opt in ('-d', '--dir') and input_dir != '':
-        current_folder = os.getcwd() + '/'
-        current_folder = current_folder.replace("\\", "/")
-
-        if CheckIfFileExists(input_dir):
-            for video in os.listdir(input_dir):
+    if opt in ('-d', '--dir') and args != '':
+        if CheckIfFileExists(args):
+            for video in os.listdir(args):
                 if video.endswith('.mp4') or video.endswith('.mkv'):
-                    videos.append(input_dir + '/' + video)
+                    videos.append(os.path.join(args, video))
 
-        elif CheckIfFileExists(current_folder + input_dir):
-            for video in os.listdir(current_folder + input_dir):
+        elif CheckIfFileExists(os.path.join(current_folder, args)):
+            for video in os.listdir(os.path.join(current_folder, args)):
                 if video.endswith('.mp4') or video.endswith('.mkv'):
-                    videos.append(current_folder + input_dir + '/' + video)
+                    videos.append(os.path.join(current_folder, args, video))
 
         else:
             print("Folder not found!")
             sys.exit()
 
-    elif opt in ('-f', '--file') and input_file != '':
-        current_folder = os.getcwd() + '/'
-        current_folder = current_folder.replace("\\", "/")
+    elif opt in ('-f', '--file') and args != '':
+        if CheckIfFileExists(args):
+            videos.append(args)
 
-        if CheckIfFileExists(input_file):
-            videos.append(input_file)
-
-        elif CheckIfFileExists(current_folder + input_file):
-            videos.append(current_folder + input_file)
+        elif CheckIfFileExists(os.path.join(current_folder, args)):
+            videos.append(os.path.join(current_folder, args))
 
         else:
             print("File not found!")
