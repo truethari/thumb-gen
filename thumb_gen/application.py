@@ -7,7 +7,7 @@ from PIL        import ImageFont
 from PIL        import ImageDraw
 
 from .config    import read_config
-from .utils     import listToString, video_info, get_file_size, convert_unit
+from .utils     import listToString, video_info, get_file_size, convert_unit, packagePath
 
 def font_info(text, font, font_size):
     try:
@@ -81,6 +81,10 @@ def lining(text, font, font_size, image_width):
 def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir, font_size):
     if font_dir == '':
         font_name = read_config('font')
+        if font_name == '':
+            package_dir = packagePath()
+            font_name = package_dir + '/fonts/RobotoCondensed-Regular.ttf'
+
     else:
         font_name = font_dir
 
