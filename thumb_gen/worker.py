@@ -12,7 +12,7 @@ class Generator:
 
         if isinstance(font_size, int):
             self.font_size = font_size
-        elif isinstance(x, str):
+        elif isinstance(font_size, str):
             raise ValueError("Font size must be an integer")
 
         if output_path == '':

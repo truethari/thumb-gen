@@ -26,6 +26,7 @@ setup(
     ],
     packages=['thumb_gen'],
     include_package_data=True,
+    package_data = {'' : ['fonts/*.ttf']},
     install_requires=["Pillow", "get-video-properties", "ffmpy"],
     entry_points={
         "console_scripts": [

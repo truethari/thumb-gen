@@ -2,6 +2,7 @@ import enum
 import os
 import sys
 import pathlib
+import thumb_gen as _ 
 
 from videoprops  import get_video_properties, get_audio_properties
 
@@ -67,3 +68,6 @@ def CheckIfFileExists(file_path):
         return True
     else:
         return False
+
+def packagePath():
+    return _.__path__[0]
