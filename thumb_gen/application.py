@@ -102,21 +102,51 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     #file
     info_filename = "Filename: " + filename
     info_filesize = "Size: " + str(get_file_size(video_path)) + "MB"
-    info_duration = "Duration: " + video_info(video_path)[0]['duration']
-    avg_bitrate = convert_unit((float(video_info(video_path)[0]['bit_rate']) + float(video_info(video_path)[1]['bit_rate'])) // 2, unit = "SIZE_UNIT.KB")
-    info_avgbitrate = "avg. Bitrate: " + str(avg_bitrate) + "KB/s"
+    try:
+        info_duration = "Duration: " + video_info(video_path)[0]['duration']
+    except KeyError:
+        info_duration = ''
+    try:
+        avg_bitrate = convert_unit((float(video_info(video_path)[0]['bit_rate']) + float(video_info(video_path)[1]['bit_rate'])) // 2, unit = "SIZE_UNIT.KB")
+        info_avgbitrate = "avg. Bitrate: " + str(avg_bitrate) + "KB/s"
+    except KeyError:
+        info_avgbitrate = ''
     #video
-    info_video = "Video: " + video_info(video_path)[0]['codec_name']
-    info_video_res = str(video_info(video_path)[0]['width']) + 'x' + str(video_info(video_path)[0]['height'])
-    info_video_bitrate = 'bitrate = ' + str(convert_unit(float(video_info(video_path)[0]['bit_rate']), unit = "SIZE_UNIT.KB")) + "KB/s"
-    video_fps = video_info(video_path)[0]['avg_frame_rate'].split('/')
-    video_fps = round(int(video_fps[0]) / int(video_fps[1]), 2)
-    info_video_fps = str(video_fps) + 'fps'
+    try:
+        info_video = "Video: " + video_info(video_path)[0]['codec_name']
+    except KeyError:
+        info_video = ''
+    try:
+        info_video_res = str(video_info(video_path)[0]['width']) + 'x' + str(video_info(video_path)[0]['height'])
+    except KeyError:
+        info_video_res = ''
+    try:
+        info_video_bitrate = 'bitrate = ' + str(convert_unit(float(video_info(video_path)[0]['bit_rate']), unit = "SIZE_UNIT.KB")) + "KB/s"
+    except KeyError:
+        info_video_bitrate = ''
+    try:
+        video_fps = video_info(video_path)[0]['avg_frame_rate'].split('/')
+        video_fps = round(int(video_fps[0]) / int(video_fps[1]), 2)
+        info_video_fps = str(video_fps) + 'fps'
+    except KeyError:
+        info_video_fps = ''
     #audio
-    info_audio = "Audio: " + video_info(video_path)[1]['codec_name']
-    info_audio_rate = str(video_info(video_path)[1]['sample_rate']) + 'Hz'
-    info_audio_channels = str(video_info(video_path)[1]['channels']) + ' channels'
-    info_audio_bitrate = 'bitrate = ' + str(convert_unit(float(video_info(video_path)[1]['bit_rate']), unit = "SIZE_UNIT.KB")) + "KB/s"
+    try:
+        info_audio = "Audio: " + video_info(video_path)[1]['codec_name']
+    except KeyError:
+        info_audio = ''
+    try:
+        info_audio_rate = str(video_info(video_path)[1]['sample_rate']) + 'Hz'
+    except KeyError:
+        info_audio_rate = ''
+    try:
+        info_audio_channels = str(video_info(video_path)[1]['channels']) + ' channels'
+    except KeyError:
+        info_audio_channels = ''
+    try:
+        info_audio_bitrate = 'bitrate = ' + str(convert_unit(float(video_info(video_path)[1]['bit_rate']), unit = "SIZE_UNIT.KB")) + "KB/s"
+    except KeyError:
+        info_audio_bitrate = ''
     #custom
     custom_text_bx = custom_text
 
