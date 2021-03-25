@@ -10,7 +10,7 @@
 --------
 This is a Python application that can be used to generate video thumbnail for mp4 and mkv file types.
 
-[![Imgur](https://i.imgur.com/Yq9roDT.png)](https://imgur.com/Yq9roDT)
+[![Imgur](https://i.imgur.com/efzMWPu.png)](https://imgur.com/efzMWPu)
 
 ## Installation
 

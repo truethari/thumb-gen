@@ -13,7 +13,7 @@ What is This?
 
 This is a Python application that can be used to generate video thumbnail for mp4 and mkv file types.
 
-.. image:: https://i.imgur.com/Yq9roDT.png
+.. image:: https://i.imgur.com/efzMWPu.png
    :target: https://github.com/truethari/thumb-gen
 
 ------------
