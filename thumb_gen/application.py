@@ -1,5 +1,6 @@
 import os
 import re
+import datetime
 
 from ffmpy      import FFmpeg
 from videoprops import get_video_properties
@@ -104,8 +105,8 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     info_filename = "Filename: " + filename
     info_filesize = "Size: " + str(get_file_size(video_path)) + "MB"
     try:
-        duration = round(float(video_info(video_path)[0]['duration']) / 60, 2)
-        info_duration = "Duration: " + str(duration) + 'min'
+        duration = round(float(video_info(video_path)[0]['duration']))
+        info_duration = "Duration: " + str(datetime.timedelta(seconds=duration))
     except KeyError:
         info_duration = ''
     try:

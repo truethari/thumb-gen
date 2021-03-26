@@ -13,7 +13,7 @@ What is This?
 
 This is a Python application that can be used to generate video thumbnail for mp4 and mkv file types.
 
-.. image:: https://i.imgur.com/efzMWPu.png
+.. image:: https://i.imgur.com/CXJbxUl.png
    :target: https://github.com/truethari/thumb-gen
 
 ------------
@@ -129,8 +129,8 @@ Example 2
    import os
    from thumb_gen.worker import Generator
    
-   folder = 'C:/input/'
+   folder = 'C:/input'
    for video in os.listdir(folder):
        if video.endswith('.mp4') or video.endswith('.mkv'):
-           app = Generator((folder + video), custom_text=False)
+           app = Generator(os.path.join(folder, video), custom_text=False)
            app.run()

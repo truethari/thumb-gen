@@ -2,7 +2,7 @@ import enum
 import os
 import sys
 import pathlib
- 
+
 from videoprops  import get_video_properties, get_audio_properties
 
 import thumb_gen as _

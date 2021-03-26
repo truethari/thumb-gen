@@ -51,7 +51,7 @@ def modify_config(options, value):
 
     with open(configfile_path, 'w') as conf:
         config_object.write(conf)
-    
+
     return True
 
 def read_config(option):

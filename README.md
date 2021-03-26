@@ -10,7 +10,7 @@
 --------
 This is a Python application that can be used to generate video thumbnail for mp4 and mkv file types.
 
-[![Imgur](https://i.imgur.com/efzMWPu.png)](https://imgur.com/efzMWPu)
+[![Imgur](https://i.imgur.com/CXJbxUl.png)](https://imgur.com/CXJbxUl)
 
 ## Installation
 
@@ -24,15 +24,15 @@ You can use pip:
 
 (These may change during the update)
 
--  The number of screen images that should be included in the final thumbnail image.
+-  The number of screen images that should be included in the final thumbnail image
 
 -  Thumbnail image quality
 
--  Font type in the video info panel. You can add a file path of a font file (.ttf) to this.
+-  Font type in the video info panel. You can add a file path of a font file (.ttf) to this
 
 -  Font size in the video info panel
 
-- Custom text in the video info panel
+-  Custom text in the video info panel
 
 Download font files : [FontSquirrel](https://www.fontsquirrel.com/)
 
@@ -96,7 +96,6 @@ CUSTOM_TEXT =
 ### Python
 
 -  If you don't set an output folder, thumbnail images will be saved in the video folder (video_path).
-
 -  If you don't need a custom text and custom font file (including font size) and you have already set these for the configuration file (using console or defaults), it will be added automatically. To avoid this set the `custom_text` value to `False` and add a custom font file location.
 
 #### Example 1
@@ -115,9 +114,9 @@ app.run()
 import os
 from thumb_gen.worker import Generator
 
-folder = 'C:/input/'
+folder = 'C:/input'
 for video in os.listdir(folder):
     if video.endswith('.mp4') or video.endswith('.mkv'):
-        app = Generator((folder + video), custom_text=False, font_dir="C:/Project/font.ttf", font_size=25)
+        app = Generator(os.path.join(folder, video), custom_text=False, font_dir="C:/Project/font.ttf", font_size=25)
         app.run()
 ```
