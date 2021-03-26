@@ -2,8 +2,8 @@
 Thumbnail Generator
 ===================
 
-.. image:: https://travis-ci.com/truethari/thumb-gen.svg?branch=master
-   :target: https://travis-ci.com/truethari/thumb-gen
+.. image:: https://github.com/truethari/thumb-gen/actions/workflows/thumb-gen.yml/badge.svg
+   :target: https://github.com/truethari/thumb-gen/actions/workflows/thumb-gen.yml
 .. image:: https://app.codacy.com/project/badge/Grade/01b66feeb94743ac80e413e4e9075595
    :target: https://www.codacy.com/gh/truethari/thumb-gen/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=truethari/thumb-gen&amp;utm_campaign=Badge_Grade
 
