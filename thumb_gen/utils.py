@@ -1,4 +1,3 @@
-import enum
 import os
 import sys
 import pathlib
@@ -51,25 +50,19 @@ def video_info(video_path):
     audio_properties = get_audio_properties(video_path)
     return video_properties, audio_properties
 
-class SIZE_UNIT(enum.Enum):
-    BYTES = 1
-    KB = 2
-    MB = 3
-    GB = 4
-
-def convert_unit(size_in_bytes, unit):
-    if unit == "SIZE_UNIT.KB":
+def convert_unit(size_in_bytes, unit='KB'):
+    if unit == "KB":
         return round((size_in_bytes/1024), 2)
-    elif unit == "SIZE_UNIT.MB":
+    elif unit == "MB":
         return round(size_in_bytes/(1024*1024), 2)
-    elif unit == "SIZE_UNIT.GB":
+    elif unit == "GB":
         return round(size_in_bytes/(1024*1024*1024), 2)
     else:
         return size_in_bytes
 
-def get_file_size(file_name, size_type = "SIZE_UNIT.MB" ):
+def get_file_size(file_name, unit="MB"):
     size = os.path.getsize(file_name)
-    return convert_unit(size, size_type)
+    return convert_unit(size, unit)
 
 def CheckIfFileExists(file_path):
     if os.path.exists(file_path):

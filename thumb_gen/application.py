@@ -25,7 +25,6 @@ def font_info(text, font, font_size):
 def lining(text, font, font_size, image_width):
     lines = {'line1': []}
     tmp_list = []
-    return_list = []
     text_list = text.split(" ")
     tmp_list = text_list
     rounds = 0
@@ -110,7 +109,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     except KeyError:
         info_duration = ''
     try:
-        avg_bitrate = convert_unit((float(video_info(video_path)[0]['bit_rate']) + float(video_info(video_path)[1]['bit_rate'])) // 2, unit = "SIZE_UNIT.KB")
+        avg_bitrate = convert_unit((float(video_info(video_path)[0]['bit_rate']) + float(video_info(video_path)[1]['bit_rate'])) // 2)
         info_avgbitrate = "avg. Bitrate: " + str(avg_bitrate) + "KB/s"
     except KeyError:
         info_avgbitrate = ''
@@ -124,7 +123,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     except KeyError:
         info_video_res = ''
     try:
-        info_video_bitrate = 'bitrate = ' + str(convert_unit(float(video_info(video_path)[0]['bit_rate']), unit = "SIZE_UNIT.KB")) + "KB/s"
+        info_video_bitrate = 'bitrate = ' + str(convert_unit(float(video_info(video_path)[0]['bit_rate']))) + "KB/s"
     except KeyError:
         info_video_bitrate = ''
     try:
@@ -147,7 +146,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     except KeyError:
         info_audio_channels = ''
     try:
-        info_audio_bitrate = 'bitrate = ' + str(convert_unit(float(video_info(video_path)[1]['bit_rate']), unit = "SIZE_UNIT.KB")) + "KB/s"
+        info_audio_bitrate = 'bitrate = ' + str(convert_unit(float(video_info(video_path)[1]['bit_rate']))) + "KB/s"
     except KeyError:
         info_audio_bitrate = ''
     #custom
@@ -188,7 +187,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     img.save(os.path.join(secure_tmp, 'bg.png'))
 
     background = Image.open(os.path.join(secure_tmp, 'bg.png'))
-    org_width, org_height = background.size
+    org_width = background.size[0]
 
     draw = ImageDraw.Draw(background)
 
@@ -211,11 +210,11 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
         rounds = rounds + 1
         for lines in info_filename_line['line{}'.format(rounds)]:
             if lines != []:
-                font_width, font_height = font_info(info_filename, font_name, font_size)
+                font_height = font_info(info_filename, font_name, font_size)[1]
                 draw.text((x, y), lines, 'black', font=font)
                 y = y + font_height
 
-    font_width, font_height = font_info(info_filesize, font_name, font_size)
+    font_height = font_info(info_filesize, font_name, font_size)[1]
 
     #line2
     draw.text((x, y), info_line2, 'black', font=font)
@@ -236,7 +235,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
             rounds = rounds + 1
             for lines in text_lines['line{}'.format(rounds)]:
                 if lines != []:
-                    font_width, font_height = font_info(lines, font_name, font_size)
+                    font_height = font_info(lines, font_name, font_size)[1]
                     draw.text((x, y), lines, 'black', font=font)
                     y = y + font_height
     y = y + 5
