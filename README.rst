@@ -30,17 +30,13 @@ You can use pip:
 Configurations
 --------------
 
-(These may change during the update)
-
 - The number of screen images that should be included in the final thumbnail image.
-
 - Thumbnail image quality
-
 - Font type in the video info panel. You can add a file path of a font file (.ttf) to this.
-
 - Font size in the video info panel
-
 - Custom text in the video info panel
+- Background color of the thumbnail (Hex codes are also supported)
+- Font colour of the thumbnail (Hex codes are also supported)
 
 Download font files : `FontSquirrel <https://www.fontsquirrel.com/>`_
 
@@ -63,6 +59,8 @@ By program default:
    FONT = 
    FONT_SIZE = 30
    CUSTOM_TEXT = 
+   BG_COLOUR = white
+   FONT_COLOUR = black
 
 -----
 Usage 
@@ -109,7 +107,6 @@ Python
 ======
 
 - If you don't set an output folder, thumbnail images will be saved in the video folder (video_path).
-
 - If you don't need a custom text and custom font file (including font size) and you have already set these for the configuration file (using console or defaults), it will be added automatically. To avoid this set the `custom_text` value to `False` and add a custom font file location.
 
 Example 1
@@ -131,6 +128,6 @@ Example 2
    
    folder = 'C:/input'
    for video in os.listdir(folder):
-       if video.endswith('.mp4') or video.endswith('.mkv'):
-           app = Generator(os.path.join(folder, video), custom_text=False)
-           app.run()
+      if video.endswith('.mp4') or video.endswith('.mkv'):
+         app = Generator(os.path.join(folder, video), custom_text=False, font_dir="C:/Project/font.ttf", font_size=25, bg_colour='blue', font_colour='red')
+         app.run()
