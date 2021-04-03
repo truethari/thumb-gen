@@ -4,7 +4,7 @@ import configparser
 from .utils     import get_datadir, CheckIfFileExists
 from .version   import config_version
 
-def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='', FONT_SIZE=30, CUSTOM_TEXT=''):
+def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='', FONT_SIZE=30, CUSTOM_TEXT='', BG_COLOUR='white', FONT_COLOUR='black'):
     my_datadir = get_datadir() / "thumb-gen"
 
     try:
@@ -16,7 +16,7 @@ def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='', FONT_SIZE=30, CUSTOM_TEX
     finally:
         configfile_path = os.path.join(str(my_datadir), "config.ini")
         config_object = configparser.ConfigParser()
-        config_object["DEFAULT"] = {"images": IMAGES, "image_quality": IMAGE_QUALITY, "font":FONT, "font_size":FONT_SIZE, "custom_text":CUSTOM_TEXT}
+        config_object["DEFAULT"] = {"images": IMAGES, "image_quality": IMAGE_QUALITY, "font":FONT, "font_size":FONT_SIZE, "custom_text":CUSTOM_TEXT, "bg_colour":BG_COLOUR, "font_colour":FONT_COLOUR}
         config_object["VERSION"] = {"config_version": config_version}
         with open(configfile_path, 'w') as conf:
             config_object.write(conf)
@@ -48,6 +48,12 @@ def modify_config(options, value):
             userinfo["custom_text"] = ''
         else:
             userinfo["custom_text"] = str(value)
+
+    elif options == "bg_colour":
+        userinfo["bg_colour"] = str(value)
+
+    elif options == "font_colour":
+        userinfo["font_colour"] = str(value)
 
     with open(configfile_path, 'w') as conf:
         config_object.write(conf)
@@ -96,6 +102,10 @@ def read_config(option):
                 return int(default['font_size'])
             elif option == 'custom_text':
                 return str(default['custom_text'])
+            elif option == 'bg_colour':
+                return str(default['bg_colour'])
+            elif option == 'font_colour':
+                return str(default['font_colour'])
             loop = False
 
         except KeyError:

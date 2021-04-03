@@ -36,7 +36,20 @@ def helps():
 
 def configurations():
         print("Configurations\n")
-        print("Images = {}\nThumbnail Quality = {}\n".format(read_config('images'), read_config('image_quality')))
+        print("Images = {}\n" \
+              "Thumbnail Quality = {}\n" \
+              "Font = {}\n" \
+              "Font Size = {}\n" \
+              "Custom Text = {}\n" \
+              "Background Colour = {}\n" \
+              "Font Colour = {}\n" \
+              .format(read_config('images'), \
+                      read_config('image_quality'), \
+                      read_config('font'), \
+                      read_config('font_size'), \
+                      read_config('custom_text'), \
+                      read_config('bg_colour'), \
+                      read_config('font_colour')))
 
         loop = True
         while loop:
@@ -87,8 +100,12 @@ def configurations():
                                                         print("Enter number between 10 - 100!")
                                 except ValueError:
                                         print("Invalid input! Please enter a valid number.")
+
                         print("Input 'clear' or '000' to clear custom text")
                         custom_text = str(input("Custom text: ") or '')
+
+                        bg_colour = str(input("Background Colour: ") or '')
+                        font_colour = str(input("Font Colour: ") or '')
 
                 except KeyboardInterrupt:
                         loop = False
@@ -96,7 +113,7 @@ def configurations():
 
                 loop = False
 
-        return images, image_quality, font_path, font_size, custom_text
+        return images, image_quality, font_path, font_size, custom_text, bg_colour, font_colour
 
 def print_process(name):
         oss = check_os()

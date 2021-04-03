@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import datetime
 
 from ffmpy      import FFmpeg
@@ -7,6 +8,7 @@ from videoprops import get_video_properties
 from PIL        import Image
 from PIL        import ImageFont
 from PIL        import ImageDraw
+from PIL        import ImageColor
 
 from .config    import read_config
 from .utils     import listToString, video_info, get_file_size, convert_unit, packagePath
@@ -79,7 +81,7 @@ def lining(text, font, font_size, image_width):
 
     return lines
 
-def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir, font_size):
+def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir, font_size, bg_colour, font_colour):
     if font_dir == '':
         font_name = read_config('font')
         if font_name == '':
@@ -96,6 +98,12 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
         custom_text = read_config('custom_text')
     elif custom_text == 'False':
         custom_text = ''
+
+    if bg_colour == '':
+        bg_colour = read_config('bg_colour')
+
+    if font_colour == '':
+        font_colour = read_config('font_colour')
 
     filename = re.split(pattern = r"[/\\]", string = video_path)
     filename = filename[-1]
@@ -183,7 +191,25 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
 
     bg_new_height = text_area_height + bg_height
 
-    img = Image.new('RGB', (bg_width, bg_new_height), color = 'white')
+    try:
+        bg_colour = ImageColor.getrgb(bg_colour)
+    except ValueError:
+        bg_colour = bg_colour
+        print("ValueError: unknown color specifier: {}".format(bg_colour))
+        print("This can be fixed by changing the configurations.\n" \
+              "Ex: Background colour = 'white'  /  Background colour = '#ffffff'")
+        sys.exit()
+
+    try:
+        font_colour = ImageColor.getrgb(font_colour)
+    except ValueError:
+        font_colour = font_colour
+        print("ValueError: unknown color specifier: {}".format(font_colour))
+        print("This can be fixed by changing the configurations.\n" \
+              "Ex: Font colour = 'black'  / Font colour = '#ffffff'")
+        sys.exit()
+
+    img = Image.new('RGB', (bg_width, bg_new_height), bg_colour)
     img.save(os.path.join(secure_tmp, 'bg.png'))
 
     background = Image.open(os.path.join(secure_tmp, 'bg.png'))
@@ -211,21 +237,21 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
         for lines in info_filename_line['line{}'.format(rounds)]:
             if lines != []:
                 font_height = font_info(info_filename, font_name, font_size)[1]
-                draw.text((x, y), lines, 'black', font=font)
+                draw.text((x, y), lines, font_colour, font=font)
                 y = y + font_height
 
     font_height = font_info(info_filesize, font_name, font_size)[1]
 
     #line2
-    draw.text((x, y), info_line2, 'black', font=font)
+    draw.text((x, y), info_line2, font_colour, font=font)
     y = y + 5 + font_height
 
     #line3
-    draw.text((x, y), info_line3, 'black', font=font)
+    draw.text((x, y), info_line3, font_colour, font=font)
     y = y + 5 + font_height
 
     #line4
-    draw.text((x, y), info_line4, 'black', font=font)
+    draw.text((x, y), info_line4, font_colour, font=font)
     y = y + 5 + font_height
 
     rounds = 0
@@ -236,7 +262,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
             for lines in text_lines['line{}'.format(rounds)]:
                 if lines != []:
                     font_height = font_info(lines, font_name, font_size)[1]
-                    draw.text((x, y), lines, 'black', font=font)
+                    draw.text((x, y), lines, font_colour, font=font)
                     y = y + font_height
     y = y + 5
 
@@ -277,7 +303,7 @@ def resize(screenshot_folder, resize_folder):
 
     return True
 
-def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text, font_dir, font_size):
+def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text, font_dir, font_size, bg_colour, font_colour):
     for img in os.listdir(resize_folder):
         image = Image.open(os.path.join(resize_folder, img))
         r_new_width, new_height = image.size
@@ -292,7 +318,7 @@ def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text, fo
     bg_new_width = int((r_new_width * 3) + 20)
     bg_new_height = int((new_height * img_rows) + ((5 * img_rows) + 5))
 
-    y = imageText(video_path, secure_temp, bg_new_width, bg_new_height, custom_text, font_dir, font_size)
+    y = imageText(video_path, secure_temp, bg_new_width, bg_new_height, custom_text, font_dir, font_size, bg_colour, font_colour)
 
     backgroud = Image.open(os.path.join(secure_temp, 'bg.png'))
 
