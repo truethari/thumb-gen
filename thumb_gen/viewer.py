@@ -3,6 +3,7 @@ import sys
 from .config import read_config
 from .utils import CheckIfFileExists, check_os
 from datetime import datetime
+from PIL import ImageColor
 
 now = datetime.now()
 current_time = now.strftime("%H:%M:%S")
@@ -36,67 +37,97 @@ def helps():
 
 def configurations():
         print("Configurations\n")
-        print("Images = {}\nThumbnail Quality = {}\n".format(read_config('images'), read_config('image_quality')))
+        print("Images = {}\n" \
+              "Thumbnail Quality = {}\n" \
+              "Font = {}\n" \
+              "Font Size = {}\n" \
+              "Custom Text = {}\n" \
+              "Background Colour = {}\n" \
+              "Font Colour = {}\n" \
+              .format(read_config('images'), \
+                      read_config('image_quality'), \
+                      read_config('font'), \
+                      read_config('font_size'), \
+                      read_config('custom_text'), \
+                      read_config('bg_colour'), \
+                      read_config('font_colour')))
 
-        loop = True
-        while loop:
+        while True:
                 try:
-                        loop2 = True
-                        while loop2:
+                        while True:
                                 print("If you do not want to change the values, leave the input blank and press Enter.\n")
                                 print("CTRL + C to exit.")
                                 try:
                                         images = int(input("Images: ") or 0)
-                                        loop2 = False
+                                        break
                                 except ValueError:
                                         print("Invalid input! Please enter a valid number.")
 
-                        loop3 = True
-                        while loop3:
+                        while True:
                                 try:
-                                        loop4 = True
-                                        while loop4:
+                                        while True:
                                                 image_quality = int(input("Thumbnail Quality (10 - 100): ") or 0)
                                                 if 101 > image_quality > 9 or image_quality == 0:
-                                                        loop4 = False
-                                                        loop3 = False
+                                                        break
                                                 else:
                                                         print("Enter number between 10 - 100!")
+                                        break
                                 except ValueError:
                                         print("Invalid input! Please enter a valid number.")
 
-                        loop5 = True
-                        while loop5:
+                        while True:
                                 font_path = str(input("Font Path: ") or '0')
                                 font_path_status = CheckIfFileExists(font_path)
                                 if font_path_status or font_path == '0':
-                                        loop5 = False
+                                        break
                                 else:
                                         print("No font file found. Check the path and re-enter it")
 
-                        loop6 = True
-                        while loop6:
+                        while True:
                                 try:
-                                        loop7 = True
-                                        while loop7:
+                                        while True:
                                                 font_size = int(input("Font Size (10 - 100): ") or 0)
                                                 if 9 < font_size < 101 or font_size == 0:
-                                                        loop7 = False
-                                                        loop6 = False
+                                                        break
                                                 else:
                                                         print("Enter number between 10 - 100!")
+                                        break
                                 except ValueError:
                                         print("Invalid input! Please enter a valid number.")
+
                         print("Input 'clear' or '000' to clear custom text")
                         custom_text = str(input("Custom text: ") or '')
 
+                        while True:
+                                try:
+                                        bg_colour = str(input("Background Colour: ") or '')
+                                        if bg_colour == '':
+                                                pass
+                                        else:
+                                                ImageColor.getrgb(bg_colour)
+                                except ValueError:
+                                        print("Color not recognized: {}. Enter a valid colour!".format(bg_colour))
+                                else:
+                                        break
+
+                        while True:
+                                try:
+                                        font_colour = str(input("Font Colour: ") or '')
+                                        if font_colour == '':
+                                                pass
+                                        else:
+                                                ImageColor.getrgb(font_colour)
+                                except ValueError:
+                                        print("Color not recognized: {}. Enter a valid colour!".format(font_colour))
+                                else:
+                                        break
+
                 except KeyboardInterrupt:
-                        loop = False
-                        sys.exit()
+                        sys.exit('\n')
 
-                loop = False
+                break
 
-        return images, image_quality, font_path, font_size, custom_text
+        return images, image_quality, font_path, font_size, custom_text, bg_colour, font_colour
 
 def print_process(name):
         oss = check_os()
