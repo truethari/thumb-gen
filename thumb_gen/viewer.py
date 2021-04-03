@@ -3,6 +3,7 @@ import sys
 from .config import read_config
 from .utils import CheckIfFileExists, check_os
 from datetime import datetime
+from PIL import ImageColor
 
 now = datetime.now()
 current_time = now.strftime("%H:%M:%S")
@@ -104,8 +105,31 @@ def configurations():
                         print("Input 'clear' or '000' to clear custom text")
                         custom_text = str(input("Custom text: ") or '')
 
-                        bg_colour = str(input("Background Colour: ") or '')
-                        font_colour = str(input("Font Colour: ") or '')
+                        loop8 = True
+                        while loop8:
+                                try:
+                                        bg_colour = str(input("Background Colour: ") or '')
+                                        if bg_colour == '':
+                                                pass
+                                        else:
+                                                bg_colour = ImageColor.getrgb(bg_colour)
+                                except ValueError:
+                                        print("Color not recognized: {}. Enter a valid colour!".format(bg_colour))
+                                else:
+                                        loop8 = False
+
+                        loop9 = True
+                        while loop9:
+                                try:
+                                        font_colour = str(input("Font Colour: ") or '')
+                                        if font_colour == '':
+                                                pass
+                                        else:
+                                                font_colour = ImageColor.getrgb(font_colour)
+                                except ValueError:
+                                        print("Color not recognized: {}. Enter a valid colour!".format(font_colour))
+                                else:
+                                        loop9 = True
 
                 except KeyboardInterrupt:
                         loop = False
