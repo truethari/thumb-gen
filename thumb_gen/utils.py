@@ -2,7 +2,7 @@ import os
 import sys
 import pathlib
 
-from videoprops  import get_video_properties, get_audio_properties
+from infomedia  import mediainfo
 
 import thumb_gen as _
 
@@ -46,13 +46,23 @@ def listToString(s, chars=" "):
         return (str1.join(s))
 
 def video_info(video_path):
-    video_properties = get_video_properties(video_path)
-    audio_properties = get_audio_properties(video_path)
-    return video_properties, audio_properties
+    audio_properties = {}
+    video_properties = {}
+    media_info = mediainfo(video_path)
+    for key in media_info:
+        try:
+            if media_info[key]['codec_type'] == 'audio':
+                audio_properties = media_info[key]
+            elif media_info[key]['codec_type'] == 'video':
+                video_properties = media_info[key]
+        except KeyError:
+            continue
+
+    return video_properties, audio_properties, media_info['format']
 
 def convert_unit(size_in_bytes, unit='KB'):
     if unit == "KB":
-        return round((size_in_bytes/1024), 2)
+        return round(size_in_bytes/1024, 2)
     elif unit == "MB":
         return round(size_in_bytes/(1024*1024), 2)
     elif unit == "GB":
