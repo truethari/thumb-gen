@@ -6,6 +6,10 @@ name: thumb-gen
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '**/README.md'
+      - '**/README.rst'
+      - 'thumb_gen/version.py'
   pull_request:
     branches: [ master ]
 
@@ -15,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2
