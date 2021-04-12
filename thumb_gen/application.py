@@ -4,7 +4,6 @@ import sys
 import datetime
 
 from ffmpy      import FFmpeg
-from videoprops import get_video_properties
 from PIL        import Image
 from PIL        import ImageFont
 from PIL        import ImageDraw
@@ -112,12 +111,12 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     info_filename = "Filename: " + filename
     info_filesize = "Size: " + str(get_file_size(video_path)) + "MB"
     try:
-        duration = round(float(video_info(video_path)[0]['duration']))
+        duration = round(float(video_info(video_path)[2]['duration']))
         info_duration = "Duration: " + str(datetime.timedelta(seconds=duration))
     except KeyError:
         info_duration = ''
     try:
-        avg_bitrate = convert_unit((float(video_info(video_path)[0]['bit_rate']) + float(video_info(video_path)[1]['bit_rate'])) // 2)
+        avg_bitrate = convert_unit(int(video_info(video_path)[2]['bit_rate']))
         info_avgbitrate = "avg. Bitrate: " + str(avg_bitrate) + "KB/s"
     except KeyError:
         info_avgbitrate = ''
@@ -131,7 +130,10 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     except KeyError:
         info_video_res = ''
     try:
-        info_video_bitrate = 'bitrate = ' + str(convert_unit(float(video_info(video_path)[0]['bit_rate']))) + "KB/s"
+        video_bitrate = video_info(video_path)[0]['bit_rate']
+        if str(video_bitrate) == 'N/A':
+            raise KeyError
+        info_video_bitrate = 'bitrate = ' + str(convert_unit(int(video_bitrate))) + "KB/s"
     except KeyError:
         info_video_bitrate = ''
     try:
@@ -154,7 +156,10 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     except KeyError:
         info_audio_channels = ''
     try:
-        info_audio_bitrate = 'bitrate = ' + str(convert_unit(float(video_info(video_path)[1]['bit_rate']))) + "KB/s"
+        audio_bitrate = video_info(video_path)[1]['bit_rate']
+        if str(audio_bitrate) == 'N/A':
+            raise KeyError
+        info_audio_bitrate = 'bitrate = ' + str(convert_unit(int(audio_bitrate))) + "KB/s"
     except KeyError:
         info_audio_bitrate = ''
     #custom
@@ -275,9 +280,7 @@ def screenshots(video_path, screenshot_folder):
         os.remove(os.path.join(screenshot_folder, img))
 
     tm_video_path = re.split(pattern = r"[/\\]", string = video_path)
-
-    video_properties = get_video_properties(video_path)
-    video_duration = int(round(float(video_properties['duration']), 2))
+    video_duration = int(round(float(video_info(video_path)[2]['duration']), 2))
     frame_time = round((video_duration / read_config('images')), 2)
 
     screenshot_path = os.path.join(screenshot_folder, tm_video_path[-1])
