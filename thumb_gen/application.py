@@ -192,7 +192,12 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
                     font_height = font_info(lines, font_name, font_size)[1]
                     font_height_custom_text = font_height_custom_text + font_height
 
-    text_area_height = 5 + font_height_filename + (font_height_normal + 5) * 3 + font_height_custom_text
+    valid_lines = 0
+    for i in (info_line2, info_line3, info_line4):
+        if len(i) - i.count(" ") != 0:
+            valid_lines += 1
+
+    text_area_height = 5 + font_height_filename + (font_height_normal + 5) * valid_lines + font_height_custom_text
 
     bg_new_height = text_area_height + bg_height
 
@@ -248,16 +253,19 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     font_height = font_info(info_filesize, font_name, font_size)[1]
 
     #line2
-    draw.text((x, y), info_line2, font_colour, font=font)
-    y = y + 5 + font_height
+    if len(info_line2) - info_line2.count(" ") != 0:
+        draw.text((x, y), info_line2, font_colour, font=font)
+        y = y + 5 + font_height
 
     #line3
-    draw.text((x, y), info_line3, font_colour, font=font)
-    y = y + 5 + font_height
+    if len(info_line3) - info_line3.count(" ") != 0:
+        draw.text((x, y), info_line3, font_colour, font=font)
+        y = y + 5 + font_height
 
     #line4
-    draw.text((x, y), info_line4, font_colour, font=font)
-    y = y + 5 + font_height
+    if len(info_line4) - info_line4.count(" ") != 0:
+        draw.text((x, y), info_line4, font_colour, font=font)
+        y = y + 5 + font_height
 
     rounds = 0
     if not custom_text == '':
