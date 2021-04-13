@@ -1,5 +1,5 @@
 import os
-import re
+import ntpath
 import sys
 import datetime
 
@@ -29,9 +29,8 @@ def lining(text, font, font_size, image_width):
     text_list = text.split(" ")
     tmp_list = text_list
     rounds = 0
-    loop = True
 
-    while loop:
+    while True:
         list_len = len(text_list)
         paragraph = listToString(tmp_list)
         text_width = font_info(paragraph, font, font_size)[0]
@@ -39,10 +38,9 @@ def lining(text, font, font_size, image_width):
         rounds = rounds + 1
 
         if not text_width > image_width:
-            loop2 = True
             list_number = 0
 
-            while loop2:
+            while True:
                 list_number = list_number + 1
 
                 try:
@@ -62,13 +60,13 @@ def lining(text, font, font_size, image_width):
 
                     tmp_list = text_list
                     rounds = 0
-                    loop2 = False
+                    break
 
         else:
             tmp_list = tmp_list[:-1]
 
         if text_list == []:
-            loop = False
+            break
 
     r_line = 0
 
@@ -80,7 +78,8 @@ def lining(text, font, font_size, image_width):
 
     return lines
 
-def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir, font_size, bg_colour, font_colour):
+def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text,
+              font_dir, font_size, bg_colour, font_colour):
     if font_dir == '':
         font_name = read_config('font')
         if font_name == '':
@@ -104,59 +103,59 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     if font_colour == '':
         font_colour = read_config('font_colour')
 
-    filename = re.split(pattern = r"[/\\]", string = video_path)
-    filename = filename[-1]
+    video_properties, audio_properties, default_properties = video_info(video_path)
 
     #file
-    info_filename = "Filename: " + filename
+    info_filename = "Filename: " + ntpath.basename(video_path)
     info_filesize = "Size: " + str(get_file_size(video_path)) + "MB"
+
     try:
-        duration = round(float(video_info(video_path)[2]['duration']))
+        duration = round(float(default_properties['duration']))
         info_duration = "Duration: " + str(datetime.timedelta(seconds=duration))
     except KeyError:
         info_duration = ''
     try:
-        avg_bitrate = convert_unit(int(video_info(video_path)[2]['bit_rate']))
+        avg_bitrate = convert_unit(int(default_properties['bit_rate']))
         info_avgbitrate = "avg. Bitrate: " + str(avg_bitrate) + "KB/s"
     except KeyError:
         info_avgbitrate = ''
     #video
     try:
-        info_video = "Video: " + video_info(video_path)[0]['codec_name']
+        info_video = "Video: " + video_properties['codec_name']
     except KeyError:
         info_video = ''
     try:
-        info_video_res = str(video_info(video_path)[0]['width']) + 'x' + str(video_info(video_path)[0]['height'])
+        info_video_res = str(video_properties['width']) + 'x' + str(video_properties['height'])
     except KeyError:
         info_video_res = ''
     try:
-        video_bitrate = video_info(video_path)[0]['bit_rate']
+        video_bitrate = video_properties['bit_rate']
         if str(video_bitrate) == 'N/A':
             raise KeyError
         info_video_bitrate = 'bitrate = ' + str(convert_unit(int(video_bitrate))) + "KB/s"
     except KeyError:
         info_video_bitrate = ''
     try:
-        video_fps = video_info(video_path)[0]['avg_frame_rate'].split('/')
+        video_fps = video_properties['avg_frame_rate'].split('/')
         video_fps = round(int(video_fps[0]) / int(video_fps[1]), 2)
         info_video_fps = str(video_fps) + 'fps'
     except KeyError:
         info_video_fps = ''
     #audio
     try:
-        info_audio = "Audio: " + video_info(video_path)[1]['codec_name']
+        info_audio = "Audio: " + audio_properties['codec_name']
     except KeyError:
         info_audio = ''
     try:
-        info_audio_rate = str(video_info(video_path)[1]['sample_rate']) + 'Hz'
+        info_audio_rate = str(audio_properties['sample_rate']) + 'Hz'
     except KeyError:
         info_audio_rate = ''
     try:
-        info_audio_channels = str(video_info(video_path)[1]['channels']) + ' channels'
+        info_audio_channels = str(audio_properties['channels']) + ' channels'
     except KeyError:
         info_audio_channels = ''
     try:
-        audio_bitrate = video_info(video_path)[1]['bit_rate']
+        audio_bitrate = audio_properties['bit_rate']
         if str(audio_bitrate) == 'N/A':
             raise KeyError
         info_audio_bitrate = 'bitrate = ' + str(convert_unit(int(audio_bitrate))) + "KB/s"
@@ -166,8 +165,10 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
     custom_text_bx = custom_text
 
     info_line2 = info_filesize + '    ' + info_duration + '    ' + info_avgbitrate
-    info_line3 = info_video + '    ' + info_video_res + '    ' + info_video_bitrate + '    ' + info_video_fps
-    info_line4 = info_audio + '    ' + info_audio_rate + '    ' + info_audio_channels + '    ' + info_audio_bitrate
+    info_line3 = info_video + '    ' + info_video_res + '    ' \
+                 + info_video_bitrate + '    ' + info_video_fps
+    info_line4 = info_audio + '    ' + info_audio_rate + '    ' \
+                 + info_audio_channels + '    ' + info_audio_bitrate
 
     font_height_filename = 0
     font_height_normal = font_info(info_duration, font_name, font_size)[1]
@@ -183,7 +184,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
                 font_height_filename = font_height_filename + font_height + 5
 
     rounds = 0
-    if not custom_text_bx == '':
+    if custom_text_bx != '':
         custom_text_lines = lining(custom_text_bx, font_name, font_size, bg_width)
         for items in custom_text_lines:
             rounds = rounds + 1
@@ -197,7 +198,8 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
         if len(i) - i.count(" ") != 0:
             valid_lines += 1
 
-    text_area_height = 5 + font_height_filename + (font_height_normal + 5) * valid_lines + font_height_custom_text
+    text_area_height = 5 + font_height_filename + (font_height_normal + 5) * valid_lines \
+                       + font_height_custom_text
 
     bg_new_height = text_area_height + bg_height
 
@@ -268,7 +270,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text, font_dir
         y = y + 5 + font_height
 
     rounds = 0
-    if not custom_text == '':
+    if custom_text != '':
         text_lines = lining(custom_text, font_name, font_size, org_width)
         for items in text_lines:
             rounds = rounds + 1
@@ -287,11 +289,10 @@ def screenshots(video_path, screenshot_folder):
     for img in os.listdir(screenshot_folder):
         os.remove(os.path.join(screenshot_folder, img))
 
-    tm_video_path = re.split(pattern = r"[/\\]", string = video_path)
     video_duration = int(round(float(video_info(video_path)[2]['duration']), 2))
     frame_time = round((video_duration / read_config('images')), 2)
 
-    screenshot_path = os.path.join(screenshot_folder, tm_video_path[-1])
+    screenshot_path = os.path.join(screenshot_folder, ntpath.basename(video_path))
     event = FFmpeg(inputs={video_path: None}, \
             outputs={screenshot_path + '_screen%d.png': \
             ['-hide_banner', '-nostats', '-loglevel', '0', '-vf', 'fps=1/' + str(frame_time)]})
@@ -314,7 +315,8 @@ def resize(screenshot_folder, resize_folder):
 
     return True
 
-def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text, font_dir, font_size, bg_colour, font_colour):
+def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text,
+          font_dir, font_size, bg_colour, font_colour):
     for img in os.listdir(resize_folder):
         image = Image.open(os.path.join(resize_folder, img))
         r_new_width, new_height = image.size
@@ -329,7 +331,8 @@ def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text, fo
     bg_new_width = int((r_new_width * 3) + 20)
     bg_new_height = int((new_height * img_rows) + ((5 * img_rows) + 5))
 
-    y = imageText(video_path, secure_temp, bg_new_width, bg_new_height, custom_text, font_dir, font_size, bg_colour, font_colour)
+    y = imageText(video_path, secure_temp, bg_new_width, bg_new_height, custom_text,
+                  font_dir, font_size, bg_colour, font_colour)
 
     backgroud = Image.open(os.path.join(secure_temp, 'bg.png'))
 
