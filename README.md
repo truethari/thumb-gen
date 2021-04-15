@@ -10,7 +10,7 @@
 --------
 This is a Python application that can be used to generate video thumbnail for mp4 and mkv file types.
 
-[![Imgur](https://i.imgur.com/CXJbxUl.png)](https://imgur.com/CXJbxUl)
+[![Imgur](https://i.imgur.com/cGoGlHF.png)](https://imgur.com/cGoGlHF)
 
 ## Installation
 
@@ -64,10 +64,6 @@ FONT_COLOUR = black
 -c, --config    Configurations
 
 -v, --version   show program's version number and exit
-
--f, --file      input a single video
-
--d, --dir       input videos from a directory
 ```
 
 ### Console
@@ -82,13 +78,13 @@ FONT_COLOUR = black
 ~$ thumb-gen -v
 ~$ thumb-gen --version
 
-~$ thumb-gen -f input.mp4
-~$ thumb-gen --file input.mp4
-~$ thumb-gen --file "d:/videos/input.mp4"
+~$ thumb-gen input.mp4
+~$ thumb-gen input.mp4 input2.mp4
+~$ thumb-gen "d:/videos/input.mp4"
 
-~$ thumb-gen -d videos
-~$ thumb-gen --dir videos
-~$ thumb-gen --dir "d:/videos"
+~$ thumb-gen "/videos"
+~$ thumb-gen "/videos" "/videos2"
+~$ thumb-gen "d:/videos"
 ```
 
 ### Python
@@ -99,7 +95,7 @@ FONT_COLOUR = black
 #### Example 1
 
 ``` python
-from thumb_gen.worker import Generator
+from thumb_gen import Generator
 
 #video_path, output_path='', custom_text=True, font_dir='', font_size=0, bg_colour='', font_colour=''
 app = Generator("C:/input/video.mp4", "C:/output/", "www.example.com", "C:/Windows/Fonts/Arial.ttf", 30)
@@ -110,7 +106,7 @@ app.run()
 
 ``` Python
 import os
-from thumb_gen.worker import Generator
+from thumb_gen import Generator
 
 folder = 'C:/input'
 for video in os.listdir(folder):
