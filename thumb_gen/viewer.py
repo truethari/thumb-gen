@@ -1,39 +1,12 @@
 import sys
 
-from .config import read_config
-from .utils import CheckIfFileExists, check_os
-from datetime import datetime
-from PIL import ImageColor
+from datetime   import datetime
+from PIL        import ImageColor
+from .config    import read_config
+from .utils     import CheckIfFileExists, check_os
 
 now = datetime.now()
 current_time = now.strftime("%H:%M:%S")
-
-def deco():
-        print("""
-  _____ _                     _                            
- /__   \ |__  _   _ _ __ ___ | |__         __ _  ___ _ __  
-   / /\/ '_ \| | | | '_ ` _ \| '_ \ _____ / _` |/ _ \ '_ \ 
-  / /  | | | | |_| | | | | | | |_) |_____| (_| |  __/ | | |
-  \/   |_| |_|\__,_|_| |_| |_|_.__/       \__, |\___|_| |_|
-                                          |___/            
-                """)
-
-def args_error(argument_list = False):
-        if argument_list == False:
-                print("Usage: thumb-gen [options] path/file\n\nerror: You must provide at least one option.")
-        else:
-                print("ERROR: unknown command {}".format(argument_list))
-
-def helps():
-        print ("""
-    -h, --help          show this help message and exit
-    -c, --config        change screenshots for thumbnail image and image quality
-    -v, --version       show program's version number and exit
-
- Options:
-    -f, --file          input a single video from current directory
-    -d, --dir           input videos from a directory
-    """)
 
 def configurations():
         print("Configurations\n")
