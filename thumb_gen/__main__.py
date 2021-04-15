@@ -46,15 +46,16 @@ def main():
             help="configurations (images, image quality, font, font size, \
                   custom text, bg color, font color)"
             )
+    parser.add_option("-v", "--version",
+            action="store_true",
+            default=False,
+            help="show thumb-gen version and exit"
+            )
 
     (options, args) = parser.parse_args()
     options = vars(options)
 
-    if not options['config'] and args == []:
-        print("no argument given!\n")
-        parser.print_help()
-
-    elif options['config']:
+    if options['config']:
         conf_images, conf_image_quality, conf_font, conf_font_size, \
         conf_custom_text, conf_bg_colour, conf_font_colour = configurations()
 
@@ -75,11 +76,18 @@ def main():
 
         sys.exit()
 
-    elif not options['config'] and args != []:
+    elif options['version']:
+        sys.exit(__version__)
+
+    elif args != []:
         videos = check_files(args)
         for video in videos:
             app = Generator(video)
             app.run()
+
+    else:
+        print("no argument given!\n")
+        parser.print_help()
 
 if __name__ == '__main__':
     main()
