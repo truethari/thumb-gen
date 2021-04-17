@@ -1,4 +1,5 @@
 import os
+import re
 import ntpath
 import sys
 import datetime
@@ -52,7 +53,7 @@ def lining(text, font, font_size, image_width):
                     lines['line{}'.format(list_number)] = [paragraph]
                     lines['line{}'.format(list_number)].append('0tKJz')
 
-                    for i in range(0, (list_len - rounds) + 1):
+                    for _ in range(0, (list_len - rounds) + 1):
                         try:
                             text_list.pop(0)
                         except IndexError:
@@ -70,7 +71,7 @@ def lining(text, font, font_size, image_width):
 
     r_line = 0
 
-    for line in lines:
+    for _ in lines:
         r_line = r_line + 1
 
         if "0tKJz" in lines['line{}'.format(r_line)]:
@@ -176,7 +177,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text,
 
     filename_text_lines = lining(info_filename, font_name, font_size, bg_width)
     rounds = 0
-    for items in filename_text_lines:
+    for _ in filename_text_lines:
         rounds = rounds + 1
         for lines in filename_text_lines['line{}'.format(rounds)]:
             if lines != []:
@@ -186,7 +187,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text,
     rounds = 0
     if custom_text_bx != '':
         custom_text_lines = lining(custom_text_bx, font_name, font_size, bg_width)
-        for items in custom_text_lines:
+        for _ in custom_text_lines:
             rounds = rounds + 1
             for lines in custom_text_lines['line{}'.format(rounds)]:
                 if lines != []:
@@ -244,7 +245,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text,
 
     #line1
     info_filename_line = lining(info_filename, font_name, font_size, bg_width)
-    for items in info_filename_line:
+    for _ in info_filename_line:
         rounds = rounds + 1
         for lines in info_filename_line['line{}'.format(rounds)]:
             if lines != []:
@@ -272,7 +273,7 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text,
     rounds = 0
     if custom_text != '':
         text_lines = lining(custom_text, font_name, font_size, org_width)
-        for items in text_lines:
+        for _ in text_lines:
             rounds = rounds + 1
             for lines in text_lines['line{}'.format(rounds)]:
                 if lines != []:
@@ -290,11 +291,10 @@ def screenshots(video_path, screenshot_folder):
         os.remove(os.path.join(screenshot_folder, img))
 
     video_duration = int(round(float(video_info(video_path)[2]['duration']), 2))
-    frame_time = round((video_duration / read_config('images')), 2)
+    frame_time = round(video_duration / read_config('images'), 2)
 
-    screenshot_path = os.path.join(screenshot_folder, ntpath.basename(video_path))
     event = FFmpeg(inputs={video_path: None}, \
-            outputs={screenshot_path + '_screen%d.png': \
+            outputs={os.path.join(screenshot_folder, '%d.png'): \
             ['-hide_banner', '-nostats', '-loglevel', '0', '-vf', 'fps=1/' + str(frame_time)]})
     event.run()
 
@@ -311,7 +311,7 @@ def resize(screenshot_folder, resize_folder):
         new_height = 300 * org_height / org_width
 
         resized_im = image.resize((300, round(new_height)))
-        resized_im.save(os.path.join(resize_folder, 'resized_') + img)
+        resized_im.save(os.path.join(resize_folder, img))
 
     return True
 
@@ -337,7 +337,10 @@ def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text,
     backgroud = Image.open(os.path.join(secure_temp, 'bg.png'))
 
     img_list = []
-    for img in os.listdir(resize_folder):
+    resized_images = os.listdir(resize_folder)
+    resized_images.sort(key=lambda f: int(re.sub('\\D', '', f)))
+
+    for img in resized_images:
         image = Image.open(os.path.join(resize_folder, img))
         img_list.append(image)
 
