@@ -47,4 +47,4 @@ class Generator:
         if thumb_out:
             print_success(self.output_folder)
 
-        return 1
+        return True

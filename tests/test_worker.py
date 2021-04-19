@@ -1,6 +1,6 @@
 import pytest
 
-from    thumb_gen.worker  import  Generator
+from thumb_gen.worker   import Generator
 
 def test_worker():
     #video_path, output_path='', custom_text='True', font_dir='', font_size=0
@@ -9,4 +9,4 @@ def test_worker():
     custom_text = "thumb gen"
     app = Generator(video_path, output_path, custom_text)
     test_worker_value = app.run()
-    assert test_worker_value == 1
+    assert test_worker_value == True
