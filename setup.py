@@ -27,7 +27,7 @@ setup(
     packages=['thumb_gen'],
     include_package_data=True,
     package_data = {'' : ['fonts/*.ttf']},
-    install_requires=["Pillow", "infomedia", "ffmpy"],
+    install_requires=["Pillow", "infomedia", "opencv-python"],
     entry_points={
         "console_scripts": [
             "thumb-gen=thumb_gen.__main__:main",

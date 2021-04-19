@@ -4,7 +4,7 @@ import ntpath
 import sys
 import datetime
 
-from ffmpy      import FFmpeg
+from cv2        import cv2
 from PIL        import Image
 from PIL        import ImageFont
 from PIL        import ImageDraw
@@ -290,15 +290,25 @@ def screenshots(video_path, screenshot_folder):
     for img in os.listdir(screenshot_folder):
         os.remove(os.path.join(screenshot_folder, img))
 
-    video_duration = int(round(float(video_info(video_path)[2]['duration']), 2))
-    frame_time = round(video_duration / read_config('images'), 2)
+    images = int(read_config('images'))
+    timestamp = round(float(video_info(video_path)[2]['duration'])) / (images + 1)
+    playtime = timestamp # if playtime = 0, it captures the first frame of the video
+    ss_time = []
+    count = 1
 
-    event = FFmpeg(inputs={video_path: None}, \
-            outputs={os.path.join(screenshot_folder, '%d.png'): \
-            ['-hide_banner', '-nostats', '-loglevel', '0', '-vf', 'fps=1/' + str(frame_time)]})
-    event.run()
+    for _ in range(0, images):
+        ss_time.append(playtime)
+        playtime += timestamp
 
-    return True
+    vidcap = cv2.VideoCapture(video_path)
+    for time in ss_time:
+        vidcap.set(cv2.CAP_PROP_POS_MSEC, time*1000)
+        success, image = vidcap.read()
+        if success:
+            cv2.imwrite(os.path.join(screenshot_folder, str(count)) + ".jpg", image)
+        count += 1
+
+    return ss_time
 
 def resize(screenshot_folder, resize_folder):
     for img in os.listdir(resize_folder):
