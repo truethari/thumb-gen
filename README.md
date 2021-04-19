@@ -10,7 +10,7 @@
 --------
 This is a Python application that can be used to generate video thumbnail for mp4 and mkv file types.
 
-[![Imgur](https://i.imgur.com/cGoGlHF.png)](https://imgur.com/cGoGlHF)
+[![Imgur](https://i.imgur.com/qRHQRK7.png)](https://imgur.com/a/xpkkyqH)
 
 ## Installation
 
@@ -48,7 +48,7 @@ By program default:
 IMAGES = 12
 IMAGE_QUALITY = 80
 FONT = 
-FONT_SIZE = 30
+FONT_SIZE = 20
 CUSTOM_TEXT = 
 BG_COLOUR = white
 FONT_COLOUR = black
@@ -59,11 +59,14 @@ FONT_COLOUR = black
 ### Usage options
 
 ``` text
--h, --help      show this help message and exit
+Usage: thumb-gen file file
+usage: thumb-gen dir dir
 
--c, --config    Configurations
-
--v, --version   show program's version number and exit
+Options:
+  -h, --help     show this help message and exit
+  -c, --config   configurations (images, image quality, font, font size,
+                 custom text, bg color, font color)
+  -v, --version  show thumb-gen version and exit
 ```
 
 ### Console
