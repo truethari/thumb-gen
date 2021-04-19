@@ -2,7 +2,7 @@ import os
 import re
 import tempfile
 
-from .application   import screenshots, resize, thumb
+from .application   import screenshots, resize, timestamps, thumb
 from .viewer        import print_process, print_success
 from .utils         import listToString
 
@@ -39,8 +39,9 @@ class Generator:
 
     def run(self):
         print_process(self.video_path)
-        screenshots(self.video_path, self.screenshot_folder)
+        self.ss_time = screenshots(self.video_path, self.screenshot_folder)
         resize(self.screenshot_folder, self.resize_folder)
+        timestamps(self.resize_folder, self.font_dir, self.font_size, self.ss_time)
         thumb_out = thumb(self.video_path, self.output_path, self.resize_folder, self.secure_temp, self.custom_text, self.font_dir, self.font_size, self.bg_colour, self.font_colour)
 
         if thumb_out:
