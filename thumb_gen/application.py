@@ -286,6 +286,31 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text,
 
     return y + 5
 
+def timestamps(folder, font_dir, font_size, timelist):
+    if font_dir == '':
+        font_name = os.path.join(packagePath(), 'fonts', 'RobotoCondensed-Regular.ttf')
+
+    font_size = 20
+
+    count = -1
+    resized_images = os.listdir(folder)
+    resized_images.sort(key=lambda f: int(re.sub('\\D', '', f)))
+    for img in resized_images:
+        count += 1
+        image = Image.open(os.path.join(folder, img))
+        img_width, img_height = image.size
+
+        text = str(datetime.timedelta(seconds=round(timelist[count])))
+        text_width, text_height = font_info(text, font_name, font_size)
+        x = img_width - text_width - 10
+        y = img_height - text_height - 10
+
+        font = ImageFont.truetype(font_name, font_size)
+
+        draw = ImageDraw.Draw(image)
+        draw.text((x, y), text , (255,255,255), font=font, stroke_width=2, stroke_fill=(0,0,0))
+        image.save(os.path.join(folder, (img)))
+
 def screenshots(video_path, screenshot_folder):
     for img in os.listdir(screenshot_folder):
         os.remove(os.path.join(screenshot_folder, img))
