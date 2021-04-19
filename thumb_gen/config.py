@@ -4,7 +4,7 @@ import configparser
 from .utils     import get_datadir, CheckIfFileExists
 from .version   import config_version
 
-def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='', FONT_SIZE=30, CUSTOM_TEXT='', BG_COLOUR='white', FONT_COLOUR='black'):
+def create_config(IMAGES=12, IMAGE_QUALITY=80, FONT='', FONT_SIZE=20, CUSTOM_TEXT='', BG_COLOUR='white', FONT_COLOUR='black'):
     my_datadir = get_datadir() / "thumb-gen"
 
     try:
