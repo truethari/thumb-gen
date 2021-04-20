@@ -289,6 +289,8 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text,
 def timestamps(folder, font_dir, font_size, timelist):
     if font_dir == '':
         font_name = os.path.join(packagePath(), 'fonts', 'RobotoCondensed-Regular.ttf')
+    else:
+        font_name = font_dir
 
     font_size = 20
 
