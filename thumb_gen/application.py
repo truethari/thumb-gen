@@ -108,7 +108,11 @@ def imageText(video_path, secure_tmp, bg_width, bg_height, custom_text,
 
     #file
     info_filename = "Filename: " + ntpath.basename(video_path)
-    info_filesize = "Size: " + str(get_file_size(video_path)) + "MB"
+    filesize = get_file_size(video_path)
+    if filesize <= 1024:
+        info_filesize = "Size: " + str(filesize) + "MiB"
+    else:
+        info_filesize = "Size: " + str(round((filesize / 1024), 2)) + "GiB"
 
     try:
         duration = round(float(default_properties['duration']))

@@ -60,17 +60,17 @@ def video_info(video_path):
 
     return video_properties, audio_properties, media_info['format']
 
-def convert_unit(size_in_bytes, unit='KB'):
-    if unit == "KB":
+def convert_unit(size_in_bytes, unit='KiB'):
+    if unit == "KiB":
         return round(size_in_bytes/1024, 2)
-    elif unit == "MB":
+    elif unit == "MiB":
         return round(size_in_bytes/(1024*1024), 2)
-    elif unit == "GB":
+    elif unit == "GiB":
         return round(size_in_bytes/(1024*1024*1024), 2)
     else:
         return size_in_bytes
 
-def get_file_size(file_name, unit="MB"):
+def get_file_size(file_name, unit="MiB"):
     size = os.path.getsize(file_name)
     return convert_unit(size, unit)
 
