@@ -398,6 +398,6 @@ def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text,
         back_im.paste(img_list[count - 1], (x, y))
         x = x + r_new_width + 5
 
-    back_im.save(output_folder + '.png', quality=read_config('image_quality'))
+    back_im.save(output_folder + '.jpg', quality=read_config('image_quality'))
 
     return True
