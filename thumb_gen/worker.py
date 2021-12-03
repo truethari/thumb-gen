@@ -13,6 +13,12 @@ class Generator:
         self.columns = columns
         self.imgCount = imgCount
 
+        if 0 < self.imgCount < 3:
+            raise ValueError("imgCount value must be greater than 3")
+        
+        if 0 < self.columns < 3:
+            raise ValueError("columns value must be greater than 3")
+
         if self.imgCount != 0:
             if self.rows == 0 and self.columns == 0:
                 pass
