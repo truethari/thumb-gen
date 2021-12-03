@@ -7,8 +7,25 @@ from .viewer        import print_process, print_success
 from .utils         import listToString
 
 class Generator:
-    def __init__(self, video_path, output_path='', custom_text='True', font_dir='', font_size=0, bg_colour='', font_colour=''):
+    def __init__(self, video_path, rows=0, columns=0, imgCount=0, output_path='', custom_text='True', font_dir='', font_size=0, bg_colour='', font_colour=''):
         self.video_path = video_path
+        self.rows = rows
+        self.columns = columns
+        self.imgCount = imgCount
+
+        if self.imgCount != 0:
+            if self.rows == 0 and self.columns == 0:
+                pass
+
+            elif self.rows == 0:
+                self.rows, mod = divmod(self.imgCount, self.columns)
+                if mod != 0 and self.imgCount > self.columns:
+                    self.rows += 1
+
+            elif self.columns == 0:
+                self.columns, mod = divmod(self.imgCount, self.rows)
+                if mod != 0 and self.imgCount > self.rows:
+                    self.columns += 1
 
         if output_path == '':
             self.output_path = self.video_path[:-4]
