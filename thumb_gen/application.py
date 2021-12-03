@@ -317,11 +317,14 @@ def timestamps(folder, font_dir, font_size, timelist):
         draw.text((x, y), text , (255,255,255), font=font, stroke_width=2, stroke_fill=(0,0,0))
         image.save(os.path.join(folder, (img)))
 
-def screenshots(video_path, screenshot_folder):
+def screenshots(video_path, screenshot_folder, imgCount):
     for img in os.listdir(screenshot_folder):
         os.remove(os.path.join(screenshot_folder, img))
 
-    images = int(read_config('images'))
+    images = imgCount
+    if imgCount == 0:
+        images = int(read_config('images'))
+
     timestamp = round(float(video_info(video_path)[2]['duration'])) / (images + 1)
     playtime = timestamp # if playtime = 0, it captures the first frame of the video
     ss_time = []
