@@ -359,20 +359,22 @@ def resize(screenshot_folder, resize_folder):
 
     return True
 
-def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text,
+def thumb(video_path, img_rows, columns, output_folder, resize_folder, secure_temp, custom_text,
           font_dir, font_size, bg_colour, font_colour):
+
     for img in os.listdir(resize_folder):
         image = Image.open(os.path.join(resize_folder, img))
         r_new_width, new_height = image.size
         break
+    
+    if img_rows == 0:
+        img_rows = 3
 
-    img_rows = read_config('images') / 3
-    tmp_var = str(img_rows).split('.')
-    if tmp_var[1] != '0':
-        img_rows = int(img_rows) + 1
-    img_rows = int(img_rows)
+    if columns == 0:
+        bg_new_width = int((r_new_width * 3) + 20)
+    else:
+        bg_new_width = int((r_new_width * columns) + (columns*5) + 5)
 
-    bg_new_width = int((r_new_width * 3) + 20)
     bg_new_height = int((new_height * img_rows) + ((5 * img_rows) + 5))
 
     y = imageText(video_path, secure_temp, bg_new_width, bg_new_height, custom_text,
@@ -394,7 +396,7 @@ def thumb(video_path, output_folder, resize_folder, secure_temp, custom_text,
     x = 5
     for img in img_list:
         count =  count + 1
-        if (count - 1) % 3 == 0 and count != 1:
+        if (count - 1) % columns == 0 and count != 1:
             y = y + new_height + 5
             x = 5
 

@@ -65,7 +65,17 @@ class Generator:
         self.ss_time = screenshots(self.video_path, self.screenshot_folder, self.imgCount)
         resize(self.screenshot_folder, self.resize_folder)
         timestamps(self.resize_folder, self.font_dir, self.font_size, self.ss_time)
-        thumb_out = thumb(self.video_path, self.output_path, self.resize_folder, self.secure_temp, self.custom_text, self.font_dir, self.font_size, self.bg_colour, self.font_colour)
+        thumb_out = thumb(self.video_path,
+                          self.rows,
+                          self.columns,
+                          self.output_path,
+                          self.resize_folder,
+                          self.secure_temp,
+                          self.custom_text,
+                          self.font_dir,
+                          self.font_size,
+                          self.bg_colour,
+                          self.font_colour)
 
         if thumb_out:
             print_success(self.output_folder)
