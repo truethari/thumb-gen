@@ -13,25 +13,32 @@ class Generator:
         self.columns = columns
         self.imgCount = imgCount
 
-        if 0 < self.imgCount < 3:
-            raise ValueError("imgCount value must be greater than 3")
-        
-        if 0 < self.columns < 3:
-            raise ValueError("columns value must be greater than 3")
-
         if self.imgCount != 0:
             if self.rows == 0 and self.columns == 0:
                 pass
 
             elif self.rows == 0:
+                if self.columns > self.imgCount:
+                    raise ValueError("'columns' value greater than 'imgCount'.")
                 self.rows, mod = divmod(self.imgCount, self.columns)
-                if mod != 0 and self.imgCount > self.columns:
+                if mod == 1 and self.imgCount > self.columns:
                     self.rows += 1
 
             elif self.columns == 0:
+                if self.rows > self.imgCount:
+                    raise ValueError("'rows' value greater than 'imgCount'.")
                 self.columns, mod = divmod(self.imgCount, self.rows)
-                if mod != 0 and self.imgCount > self.rows:
+                if mod == 1 and self.imgCount > self.rows:
                     self.columns += 1
+
+            else:
+                raise TypeError("Defining 'rows', 'columns' and 'imgCount' at once is not functional. Remove one of them")
+
+        if 0 < self.imgCount < 3:
+            raise ValueError("'imgCount' value must be greater than 3")
+
+        if 0 < self.columns < 3:
+            raise ValueError("'columns' value must be greater than 3")
 
         if output_path == '':
             self.output_path = self.video_path[:-4]
