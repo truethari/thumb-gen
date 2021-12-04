@@ -371,6 +371,7 @@ def thumb(video_path, img_rows, columns, output_folder, resize_folder, secure_te
         img_rows = 3
 
     if columns == 0:
+        columns = 3
         bg_new_width = int((r_new_width * 3) + 20)
     else:
         bg_new_width = int((r_new_width * columns) + (columns*5) + 5)
