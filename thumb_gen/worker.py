@@ -15,24 +15,30 @@ class Generator:
 
         if self.imgCount != 0:
             if self.rows == 0 and self.columns == 0:
-                pass
+                self.columns = 3
+                self.rows, mod = divmod(self.imgCount, self.columns)
+                if mod != 0 and self.imgCount > self.columns:
+                    self.rows += 1
 
             elif self.rows == 0:
                 if self.columns > self.imgCount:
                     raise ValueError("'columns' value greater than 'imgCount'.")
                 self.rows, mod = divmod(self.imgCount, self.columns)
-                if mod == 1 and self.imgCount > self.columns:
+                if mod != 0 and self.imgCount > self.columns:
                     self.rows += 1
 
             elif self.columns == 0:
                 if self.rows > self.imgCount:
                     raise ValueError("'rows' value greater than 'imgCount'.")
                 self.columns, mod = divmod(self.imgCount, self.rows)
-                if mod == 1 and self.imgCount > self.rows:
+                if mod != 0 and self.imgCount > self.rows:
                     self.columns += 1
 
             else:
-                raise TypeError("Defining 'rows', 'columns' and 'imgCount' at once is not functional. Remove one of them")
+                raise TypeError("defining 'rows', 'columns' and 'imgCount' at once is not functional. remove one of them")
+        else:
+            if (self.rows == 0 and self.columns != 0) or (self.rows != 0 and self.columns == 0):
+                raise ValueError("missing 1 required positional argument: 'imgCount'")
 
         if 0 < self.imgCount < 3:
             raise ValueError("'imgCount' value must be greater than 3")
@@ -55,7 +61,7 @@ class Generator:
         if isinstance(font_size, int):
             self.font_size = font_size
         elif isinstance(font_size, str):
-            raise ValueError("Font size must be an integer")
+            raise ValueError("'font_size' must be an integer")
 
         self.bg_colour = bg_colour
         self.font_colour = font_colour
