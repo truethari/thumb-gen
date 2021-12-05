@@ -7,7 +7,7 @@ from .viewer        import print_process, print_success
 from .utils         import listToString
 
 class Generator:
-    def __init__(self, video_path, rows=0, columns=0, imgCount=0, output_path='', custom_text='True', font_dir='', font_size=0, bg_colour='', font_colour=''):
+    def __init__(self, video_path, output_path='', rows=0, columns=0, imgCount=0, custom_text='True', font_dir='', font_size=0, bg_colour='', font_colour=''):
         self.video_path = video_path
         self.rows = rows
         self.columns = columns
