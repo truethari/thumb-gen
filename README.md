@@ -4,6 +4,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/01b66feeb94743ac80e413e4e9075595)](https://www.codacy.com/gh/truethari/thumb-gen/dashboard?utm_source=github.com&utm_medium=referral&utm_content=truethari/thumb-gen&utm_campaign=Badge_Grade)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![PyPI version](https://badge.fury.io/py/thumb-gen.svg)](https://badge.fury.io/py/thumb-gen)
+[![Downloads](https://pepy.tech/badge/thumb-gen)](https://pepy.tech/project/thumb-gen)
 
 ## What is This
 
