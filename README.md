@@ -106,7 +106,11 @@ Generator(video_path, output_path='', rows=0, columns=0, imgCount=0, custom_text
 ```python
 from thumb_gen import Generator
 
-app = Generator("C:/input/video.mp4", "C:/output/", "www.example.com", "C:/Windows/Fonts/Arial.ttf", 30)
+app = Generator(video_path="C:/input/video.mp4",
+                output_path="C:/output/",
+                custom_text="www.example.com",
+                font_dir="C:/Windows/Fonts/Arial.ttf",
+                font_size=30)
 app.run()
 ```
 
@@ -119,7 +123,12 @@ from thumb_gen import Generator
 folder = 'C:/input'
 for video in os.listdir(folder):
     if video.endswith('.mp4') or video.endswith('.mkv'):
-        app = Generator(os.path.join(folder, video), custom_text=False, font_dir="C:/Project/font.ttf", font_size=25, bg_colour='blue', font_colour='red')
+        app = Generator(video_path=os.path.join(folder, video),
+                        custom_text=False,
+                        font_dir="C:/Project/font.ttf",
+                        font_size=25,
+                        bg_colour='blue',
+                        font_colour='red')
         app.run()
 ```
 
@@ -132,7 +141,13 @@ from thumb_gen import Generator
 folder = 'C:/input'
 for video in os.listdir(folder):
     if video.endswith('.mp4') or video.endswith('.mkv'):
-        app = Generator(os.path.join(folder, video), columns=5, rows=10, custom_text=False
-        font_dir="C:/Project/font.ttf", font_size=25, bg_colour='blue', font_colour='red')
+        app = Generator(video_path=os.path.join(folder, video),
+                        columns=5,
+                        rows=10,
+                        custom_text=False,
+                        font_dir="C:/Project/font.ttf",
+                        font_size=25,
+                        bg_colour='blue',
+                        font_colour='red')
         app.run()
 ```
