@@ -1,10 +1,8 @@
 import os
-import re
 import tempfile
 
 from .application   import screenshots, resize, timestamps, thumb
 from .viewer        import print_process, print_success
-from .utils         import listToString
 
 class Generator:
     def __init__(self, video_path, output_path='', rows=0, columns=0, imgCount=0, custom_text='True', font_dir='', font_size=0, bg_colour='', font_colour=''):
@@ -47,12 +45,15 @@ class Generator:
             raise ValueError("'columns' value must be greater than 3")
 
         if output_path == '':
-            self.output_path = self.video_path[:-4]
-            self.output_folder = listToString(re.split(pattern = r"[/\\]", string = self.video_path)[:-1], "sys")
-
+            # better way toany extension length
+            self.output_path = os.path.splitext(self.video_path)[0]
+            self.output_folder = os.path.dirname(self.video_path)
         else:
-            self.filename = re.split(pattern = r"[/\\]", string = self.video_path)[-1]
-            self.output_path = os.path.join(output_path, self.filename[:-4])
+            # Extract filename and strip extension
+            filename = os.path.basename(self.video_path)
+            filename_no_ext = os.path.splitext(filename)[0]
+            
+            self.output_path = os.path.join(output_path, filename_no_ext)
             self.output_folder = self.output_path
 
         self.custom_text = str(custom_text)
