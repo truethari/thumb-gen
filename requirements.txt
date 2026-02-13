@@ -1,3 +1,3 @@
-opencv-python
-infomedia
-Pillow
+opencv-python>=4.13.0
+infomedia>=1.0.2
+Pillow>=11.0.0

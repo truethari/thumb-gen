@@ -4,7 +4,7 @@ import ntpath
 import sys
 import datetime
 
-from cv2        import cv2
+import cv2
 from PIL        import Image
 from PIL        import ImageFont
 from PIL        import ImageDraw
@@ -19,8 +19,10 @@ def font_info(text, font, font_size):
     except OSError:
         font = ImageFont.load_default()
 
-    text_width = font.getsize(text)[0]
-    text_height = font.getsize(text)[1]
+    # Use getbbox() instead of the deprecated getsize()
+    left, top, right, bottom = font.getbbox(text)
+    text_width = right - left
+    text_height = bottom - top
 
     return text_width, text_height
 

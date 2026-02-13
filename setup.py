@@ -1,9 +1,16 @@
 import pathlib
+import os
 
 from setuptools import setup, find_packages
-from thumb_gen  import __version__
 
 here = pathlib.Path(__file__).parent.resolve()
+
+# Read the version safely without importing the package
+version_dict = {}
+with open(os.path.join(here, "thumb_gen", "version.py")) as fp:
+    exec(fp.read(), version_dict)
+__version__ = version_dict["__version__"]
+
 long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 setup(
@@ -27,7 +34,7 @@ setup(
     packages=['thumb_gen'],
     include_package_data=True,
     package_data = {'' : ['fonts/*.ttf']},
-    install_requires=["Pillow", "infomedia", "opencv-python"],
+    install_requires=["Pillow>=11.0.0", "infomedia>=1.0.2", "opencv-python>=4.13.0"],
     entry_points={
         "console_scripts": [
             "thumb-gen=thumb_gen.__main__:main",
